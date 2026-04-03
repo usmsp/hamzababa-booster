@@ -3,53 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hamza Baba Booster</title>
+    <title>Hamza Baba Booster - VIP Edition</title>
     <style>
-        body { background-color: #000; color: #d4af37; font-family: 'Segoe UI', sans-serif; text-align: center; padding: 50px; }
-        .container { border: 2px solid #d4af37; padding: 30px; border-radius: 15px; display: inline-block; box-shadow: 0 0 20px #d4af37; background: #050505; max-width: 400px; }
-        h1 { font-size: 2em; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
-        input { width: 90%; padding: 12px; margin: 20px 0; border-radius: 5px; border: 1px solid #d4af37; background: #111; color: #fff; text-align: center; }
-        button { background-color: #d4af37; color: #000; padding: 15px 40px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 1em; transition: 0.3s; width: 100%; }
-        button:hover { background-color: #fff; transform: scale(1.05); }
-        #status { margin-top: 20px; font-weight: bold; color: #fff; }
+        body { background-color: #000; color: #d4af37; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding: 50px; margin: 0; }
+        .container { border: 2px solid #d4af37; padding: 30px; border-radius: 20px; display: inline-block; box-shadow: 0 0 25px rgba(212, 175, 55, 0.4); background: linear-gradient(145deg, #050505, #111); max-width: 450px; width: 90%; margin-top: 20px; }
+        h1 { font-size: 2.2em; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 5px; text-shadow: 2px 2px 4px #000; }
+        p.subtitle { color: #fff; font-size: 0.9em; margin-bottom: 25px; opacity: 0.8; }
+        input { width: 85%; padding: 15px; margin: 15px 0; border-radius: 8px; border: 1px solid #d4af37; background: #000; color: #fff; text-align: center; font-size: 1em; outline: none; }
+        input:focus { box-shadow: 0 0 10px #d4af37; }
+        button { background: linear-gradient(90deg, #d4af37, #f4cf6d); color: #000; padding: 18px 0; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1.1em; transition: 0.4s; width: 90%; text-transform: uppercase; }
+        button:hover { background: #fff; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(255,255,255,0.3); }
+        #status { margin-top: 25px; font-weight: bold; color: #fff; min-height: 24px; padding: 10px; border-radius: 5px; }
+        .footer { margin-top: 40px; font-size: 0.85em; color: #555; letter-spacing: 1px; }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <h1>Hamza Baba Booster</h1>
-        <p style="color: #fff;">Premium Social Media Growth Engine</p>
+        <h1>HAMZA BABA</h1>
+        <p class="subtitle">PREMIUM SOCIAL MEDIA GROWTH ENGINE</p>
+        
         <input type="text" id="videoLink" placeholder="ویڈیو کا لنک یہاں پیسٹ کریں...">
         <br>
-        <button onclick="startBoosting()">START BOOSTING</button>
-        <div id="status">سسٹم تیار ہے</div>
-        <div style="margin-top: 30px; font-size: 0.8em; color: #666;">Powered by Hamza Baba Travels & Tech</div>
+        <button onclick="startBoosting()">START BOOSTING NOW</button>
+        
+        <div id="status">سسٹم آن لائن اور تیار ہے ✅</div>
+        
+        <div class="footer">
+            OWNED BY: <strong>USMAN KHAN</strong><br>
+            POWERED BY HAMZA BABA TRAVELS & TECH
+        </div>
     </div>
 
     <script>
         async function startBoosting() {
-            const link = document.getElementById('videoLink').value;
+            const linkInput = document.getElementById('videoLink');
             const status = document.getElementById('status');
+            const link = linkInput.value;
             
             if(!link) {
-                alert("براہ کرم ویڈیو لنک درج کریں!");
+                alert("عثمان بھائی، پہلے ویڈیو لنک تو ڈالیں!");
                 return;
             }
 
-            status.innerHTML = "سیٹ اپ ہو رہا ہے... براہ کرم انتظار کریں";
+            status.innerHTML = "<span style='color: #d4af37;'>رابطہ ہو رہا ہے... براہ کرم انتظار کریں ⏳</span>";
             
             try {
-                // یہ حصہ آپ کے Colab سے رابطہ کرے گا
-                const response = await fetch('YOUR_COLAB_URL/boost', {
+                // آپ کا فائنل لائیو کولیب لنک یہاں سیٹ کر دیا گیا ہے
+                const response = await fetch('https://exotoxic-janelle-conversantly.ngrok-free.app/boost', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ url: link })
                 });
-                const data = await response.json();
-                status.innerHTML = "کام شروع ہو گیا ہے! ویوز جا رہے ہیں۔";
+
+                if (response.ok) {
+                    status.innerHTML = "<span style='color: #28a745;'>✅ مبارک ہو! کام شروع ہو گیا ہے۔ ویوز جا رہے ہیں۔</span>";
+                    linkInput.value = ""; // لنک کلیئر کر دیں
+                } else {
+                    status.innerHTML = "<span style='color: #ff4444;'>❌ سرور سے رابطہ ٹوٹ گیا ہے۔ دوبارہ کوشش کریں۔</span>";
+                }
             } catch (error) {
-                status.innerHTML = "سسٹم ابھی آف لائن ہے۔ پہلے Colab آن کریں۔";
+                status.innerHTML = "<span style='color: #ff4444;'>⚠️ سرور آف لائن ہے! پہلے اپنا Google Colab اسٹارٹ کریں۔</span>";
+                console.error("Error:", error);
             }
         }
     </script>
+
 </body>
 </html>
