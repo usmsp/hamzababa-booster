@@ -6,12 +6,12 @@
     <title>Hamza Baba Booster</title>
     <style>
         body { background-color: #000; color: #d4af37; font-family: 'Segoe UI', sans-serif; text-align: center; padding: 50px; }
-        .container { border: 2px solid #d4af37; padding: 30px; border-radius: 15px; display: inline-block; box-shadow: 0 0 20px #d4af37; background: #050505; }
+        .container { border: 2px solid #d4af37; padding: 30px; border-radius: 15px; display: inline-block; box-shadow: 0 0 20px #d4af37; background: #050505; max-width: 400px; }
         h1 { font-size: 2em; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
         input { width: 90%; padding: 12px; margin: 20px 0; border-radius: 5px; border: 1px solid #d4af37; background: #111; color: #fff; text-align: center; }
-        button { background-color: #d4af37; color: #000; padding: 15px 40px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 1em; transition: 0.3s; }
+        button { background-color: #d4af37; color: #000; padding: 15px 40px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 1em; transition: 0.3s; width: 100%; }
         button:hover { background-color: #fff; transform: scale(1.05); }
-        .footer { margin-top: 30px; font-size: 0.8em; color: #666; }
+        #status { margin-top: 20px; font-weight: bold; color: #fff; }
     </style>
 </head>
 <body>
@@ -20,8 +20,36 @@
         <p style="color: #fff;">Premium Social Media Growth Engine</p>
         <input type="text" id="videoLink" placeholder="ویڈیو کا لنک یہاں پیسٹ کریں...">
         <br>
-        <button onclick="alert('سسٹم کنیکٹ ہو رہا ہے...')">START BOOSTING</button>
-        <div class="footer">Powered by Hamza Baba Travels & Tech</div>
+        <button onclick="startBoosting()">START BOOSTING</button>
+        <div id="status">سسٹم تیار ہے</div>
+        <div style="margin-top: 30px; font-size: 0.8em; color: #666;">Powered by Hamza Baba Travels & Tech</div>
     </div>
+
+    <script>
+        async function startBoosting() {
+            const link = document.getElementById('videoLink').value;
+            const status = document.getElementById('status');
+            
+            if(!link) {
+                alert("براہ کرم ویڈیو لنک درج کریں!");
+                return;
+            }
+
+            status.innerHTML = "سیٹ اپ ہو رہا ہے... براہ کرم انتظار کریں";
+            
+            try {
+                // یہ حصہ آپ کے Colab سے رابطہ کرے گا
+                const response = await fetch('YOUR_COLAB_URL/boost', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: link })
+                });
+                const data = await response.json();
+                status.innerHTML = "کام شروع ہو گیا ہے! ویوز جا رہے ہیں۔";
+            } catch (error) {
+                status.innerHTML = "سسٹم ابھی آف لائن ہے۔ پہلے Colab آن کریں۔";
+            }
+        }
+    </script>
 </body>
 </html>
