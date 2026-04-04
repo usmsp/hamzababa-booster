@@ -1,72 +1,73 @@
 <!DOCTYPE html>
-<html lang="ur">
+<html lang="ur" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hamza Baba | Global Social Media Booster</title>
+    <title>Hamza Baba | وی آئی پی بوسٹر</title>
     <style>
-        :root { --gold: #FFD700; --dark: #000000; --gray: #1a1a1a; }
-        body { background-color: var(--dark); color: white; font-family: 'Arial', sans-serif; margin: 0; direction: rtl; }
-        .nav { background: var(--gray); padding: 15px; border-bottom: 2px solid var(--gold); text-align: center; }
-        .logo { font-size: 2em; color: var(--gold); font-weight: bold; text-transform: uppercase; letter-spacing: 3px; }
-        .hero { padding: 50px 20px; text-align: center; background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&q=80'); background-size: cover; }
-        .container { max-width: 1000px; margin: auto; padding: 20px; }
-        .tool-card { background: var(--gray); border-radius: 15px; padding: 30px; border: 1px solid #333; margin-bottom: 30px; text-align: center; }
-        input { width: 80%; padding: 15px; border-radius: 25px; border: 1px solid var(--gold); background: #000; color: #fff; margin: 20px 0; }
-        .btn-boost { background: var(--gold); color: #000; padding: 15px 40px; border-radius: 25px; font-weight: bold; cursor: pointer; border: none; font-size: 1.2em; }
-        .blog-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 40px; }
-        .blog-card { background: #111; padding: 15px; border-radius: 10px; border-right: 4px solid var(--gold); }
-        .ad-space { background: #050505; height: 150px; margin: 20px 0; border: 1px dashed #444; display: flex; align-items: center; justify-content: center; color: #444; }
+        :root { --gold: #FFD700; --dark: #111; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: var(--dark); color: white; text-align: center; padding: 20px; margin: 0; }
+        .container { background: #222; padding: 40px 20px; border-radius: 20px; border: 2px solid var(--gold); max-width: 600px; margin: 50px auto; box-shadow: 0 0 20px rgba(255, 215, 0, 0.2); }
+        h1 { color: var(--gold); font-size: 2.5em; margin-bottom: 10px; }
+        p { color: #ccc; margin-bottom: 30px; }
+        input { width: 85%; padding: 15px; border-radius: 10px; border: none; font-size: 16px; margin-bottom: 20px; outline: none; }
+        button { background-color: var(--gold); color: black; border: none; padding: 15px 40px; border-radius: 10px; cursor: pointer; font-size: 20px; font-weight: bold; transition: 0.3s; }
+        button:hover { transform: scale(1.05); background-color: #ffcc00; }
+        #status { margin-top: 25px; font-size: 18px; font-weight: bold; }
+        .loading { color: var(--gold); }
+        .success { color: #00ff00; }
+        .error { color: #ff4444; }
     </style>
 </head>
 <body>
 
-    <div class="nav">
-        <div class="logo">HAMZA BABA</div>
-    </div>
+<div class="container">
+    <h1>HAMZA BABA</h1>
+    <p>عالمی سوشل میڈیا بوسٹر انجن</p>
+    
+    <input type="text" id="videoUrl" placeholder="ویڈیو کا لنک یہاں پیسٹ کریں...">
+    <br>
+    <button onclick="startEngine()">بوسٹ شروع کریں 🚀</button>
+    
+    <div id="status"></div>
+</div>
 
-    <div class="hero">
-        <h1>سوشل میڈیا پر وائرل ہونا اب ہوا آسان!</h1>
-        <p>حمزہ بابا فری بوسٹر کے ساتھ اپنے ویوز اور فالوورز بڑھائیں۔</p>
-    </div>
-
-    <div class="container">
-        <div class="ad-space">GOOGLE ADS PLACEHOLDER</div>
-
-        <div class="tool-card">
-            <h2>یوٹیوب / ٹک ٹاک ویوز بوسٹر</h2>
-            <p>اپنی ویڈیو کا لنک نیچے ڈالیں اور جادو دیکھیں</p>
-            <input type="text" id="videoLink" placeholder="لنک یہاں پیسٹ کریں...">
-            <br>
-            <button class="btn-boost" onclick="startBoost()">بوسٹ شروع کریں</button>
-            <p id="status" style="margin-top:15px; color: var(--gold);"></p>
-        </div>
-
-        <h2>تازہ ترین معلومات (Blog)</h2>
-        <div class="blog-section">
-            <div class="blog-card">
-                <h3>یوٹیوب چینل کیسے گرو کریں؟</h3>
-                <p>آج کے دور میں یوٹیوب سے پیسے کمانا بہت آسان ہے، بس آپ کو صحیح طریقہ معلوم ہونا چاہیے...</p>
-            </div>
-            <div class="blog-card">
-                <h3>ٹک ٹاک کی ویڈیوز وائرل کرنے کا خفیہ طریقہ</h3>
-                <p>اگر آپ کی ویڈیو وائرل نہیں ہو رہی، تو ان 3 ٹپس پر عمل کریں...</p>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        function startBoost() {
-            let link = document.getElementById('videoLink').value;
-            let status = document.getElementById('status');
-            if(link == "") {
-                alert("پہلے لنک تو ڈالیں عثمان بھائی!");
-            } else {
-                status.innerHTML = "پروسیسنگ شروع... ہم آپ کا لنک سرور پر بھیج رہے ہیں۔";
-                // یہاں ہم مستقبل میں وہ مستقل سرور لنک جوڑیں گے
-            }
+<script>
+    async function startEngine() {
+        const videoUrl = document.getElementById('videoUrl').value;
+        const statusDiv = document.getElementById('status');
+        
+        if(!videoUrl) {
+            alert("پہلے ویڈیو کا لنک ڈالیں!");
+            return;
         }
-    </script>
+
+        statusDiv.className = "loading";
+        statusDiv.innerText = "⏳ حمزہ بابا انجن سے رابطہ ہو رہا ہے...";
+
+        try {
+            // آپ کا اپنا بنایا ہوا انجن لنک
+            const response = await fetch('https://usmansp-hamzababa-engine.hf.space/boost', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url: videoUrl })
+            });
+
+            if(response.ok) {
+                statusDiv.className = "success";
+                statusDiv.innerText = "✅ انجن اسٹارٹ ہو گیا! کام شروع ہے عثمان بھائی۔";
+                alert("کامیابی! آپ کا ٹاسک شروع کر دیا گیا ہے۔");
+            } else {
+                statusDiv.className = "error";
+                statusDiv.innerText = "❌ معذرت، انجن ابھی مصروف ہے۔";
+            }
+        } catch (error) {
+            statusDiv.className = "error";
+            statusDiv.innerText = "❌ رابطہ نہیں ہو سکا! اپنا انٹرنیٹ چیک کریں۔";
+            console.error(error);
+        }
+    }
+</script>
 
 </body>
 </html>
