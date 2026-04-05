@@ -3,117 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TK1 CORE | Hamza Baba Portal</title>
+    <title>TK1 CORE | Hamza Baba</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap');
-        .font-cyber { font-family: 'Orbitron', sans-serif; }
-    </style>
 </head>
 <body class="bg-black text-white min-h-screen flex items-center justify-center p-4">
 
-    <div class="max-w-md w-full bg-slate-900 rounded-3xl shadow-2xl border-2 border-blue-600 p-8">
-        <h1 class="text-center text-3xl font-black font-cyber text-blue-500 mb-8 tracking-tighter">TK1 CORE</h1>
+    <div class="max-w-md w-full bg-slate-900 rounded-3xl border-2 border-blue-600 p-8 shadow-2xl">
+        <h1 class="text-center text-3xl font-black text-blue-500 mb-8">TK1 CORE</h1>
 
-        <div class="space-y-10">
-            <div class="relative group">
-                <h2 class="text-green-400 text-sm font-bold mb-2 flex items-center">
-                    <span class="mr-2">📥</span> FAST DOWNLOADER
-                </h2>
-                <input id="v_url" type="text" placeholder="Paste Video Link..." 
-                    class="w-full bg-slate-800 border border-slate-700 p-4 rounded-xl focus:border-green-500 outline-none transition-all text-sm">
-                <button onclick="runDownload()" id="dl_btn_text"
-                    class="w-full mt-3 bg-green-600 hover:bg-green-500 py-4 rounded-xl font-black uppercase tracking-widest transition-all">
-                    Get Download Link
-                </button>
-                
-                <div id="result_area" class="mt-4 hidden text-center animate-bounce">
-                    <a id="download_link" href="#" target="_blank" 
-                        class="inline-block bg-blue-600 px-6 py-3 rounded-full font-bold text-sm shadow-lg shadow-blue-900/50">
-                        ⚡ CLICK TO DOWNLOAD
-                    </a>
-                </div>
-            </div>
-
-            <div>
-                <h2 class="text-blue-400 text-sm font-bold mb-2 flex items-center">
-                    <span class="mr-2">🚀</span> STEALTH BOOSTER
-                </h2>
-                <input id="b_url" type="text" placeholder="TikTok Video Link..." 
-                    class="w-full bg-slate-800 border border-slate-700 p-4 rounded-xl focus:border-blue-500 outline-none transition-all text-sm text-gray-400">
-                <button onclick="runBoost()" 
-                    class="w-full mt-3 bg-blue-700 hover:bg-blue-600 py-4 rounded-xl font-black uppercase tracking-widest transition-all shadow-lg shadow-blue-900/20">
-                    Start 50+ Views
-                </button>
-                <p id="status_msg" class="text-[10px] text-center mt-3 text-slate-500 font-mono uppercase tracking-widest"></p>
+        <div class="mb-10">
+            <h2 class="text-green-400 text-sm font-bold mb-2">📥 FAST DOWNLOADER</h2>
+            <input id="v_url" type="text" placeholder="Paste link here..." class="w-full bg-slate-800 p-4 rounded-xl mb-3 outline-none focus:border-green-500 border border-transparent">
+            <button onclick="runDL()" id="btn" class="w-full bg-green-600 py-4 rounded-xl font-bold uppercase">Get Link</button>
+            <div id="res" class="mt-4 hidden text-center">
+                <a id="dl_link" href="#" target="_blank" class="bg-blue-600 px-8 py-3 rounded-full font-bold">⚡ CLICK TO SAVE</a>
             </div>
         </div>
-        
-        <div class="mt-10 pt-6 border-t border-slate-800 text-center">
-            <p class="text-gray-600 text-[10px]">POWERED BY HAMZA BABA ENGINE v3.0</p>
+
+        <div>
+            <h2 class="text-blue-400 text-sm font-bold mb-2">🚀 STEALTH BOOSTER</h2>
+            <input id="b_url" type="text" placeholder="TikTok Link..." class="w-full bg-slate-800 p-4 rounded-xl mb-3 outline-none">
+            <button onclick="runBoost()" class="w-full bg-blue-700 py-4 rounded-xl font-bold uppercase">Start 50+ Views</button>
+            <p id="msg" class="text-[10px] text-center mt-3 text-gray-500"></p>
         </div>
     </div>
 
     <script>
-        // عثمان صاحب، یہاں لنک کے آخر میں سلیش (/) لگا دیا ہے تاکہ ایرر نہ آئے
-        const API_BASE = "https://usmansp-hanzababa-engine.hf.space/";
+        // عثمان صاحب، یہ لنک اب بالکل لاک کر دیا گیا ہے
+        const API = "https://usmansp-hanzababa-engine.hf.space";
 
-        async function runDownload() {
-            const btn = document.getElementById('dl_btn_text');
-            const urlInput = document.getElementById('v_url').value;
-            const resArea = document.getElementById('result_area');
-            const dlLink = document.getElementById('download_link');
-
-            if(!urlInput) return alert("Please paste a link first!");
-
-            btn.innerText = "CONNECTING ENGINE...";
-            btn.disabled = true;
-
+        async function runDL() {
+            const val = document.getElementById('v_url').value;
+            const btn = document.getElementById('btn');
+            if(!val) return alert("Link missing!");
+            
+            btn.innerText = "CONNECTING...";
             try {
-                const response = await fetch(API_BASE + 'download', {
+                const r = await fetch(`${API}/download`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ url: urlInput })
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({url: val})
                 });
-
-                const data = await response.json();
-
-                if(data.status === 'success') {
-                    dlLink.href = data.link;
-                    resArea.classList.remove('hidden');
-                    btn.innerText = "SUCCESS!";
-                    btn.classList.replace('bg-green-600', 'bg-blue-600');
-                } else {
-                    alert("Engine Error: " + (data.message || "Invalid Link"));
-                    btn.innerText = "TRY AGAIN";
-                    btn.disabled = false;
-                }
-            } catch (error) {
-                console.error(error);
-                alert("SERVER OFFLINE! Please check if Hugging Face is Running.");
-                btn.innerText = "SERVER ERROR";
-                btn.disabled = false;
+                const d = await r.json();
+                if(d.status === 'success') {
+                    document.getElementById('dl_link').href = d.link;
+                    document.getElementById('res').classList.remove('hidden');
+                    btn.innerText = "DONE!";
+                } else { alert("Error from Engine"); btn.innerText = "RETRY"; }
+            } catch(e) { 
+                alert("SERVER OFFLINE! Please Refresh Hugging Face.");
+                btn.innerText = "ERROR";
             }
         }
 
         async function runBoost() {
-            const url = document.getElementById('b_url').value;
-            const status = document.getElementById('status_msg');
-            
-            if(!url) return alert("Paste TikTok Link!");
-
-            status.innerText = ">>> INITIATING STEALTH PROTOCOL <<<";
-            
+            const val = document.getElementById('b_url').value;
+            if(!val) return alert("Link missing!");
+            document.getElementById('msg').innerText = "WORKING...";
             try {
-                await fetch(API_BASE + 'start', {
+                await fetch(`${API}/start`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ url: url })
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({url: val})
                 });
-                status.innerText = ">>> MISSION STARTED: CHECK LOGS <<<";
-            } catch (e) {
-                status.innerText = ">>> CONNECTION FAILED <<<";
-            }
+                document.getElementById('msg').innerText = "STARTED SUCCESSFULLY";
+            } catch(e) { document.getElementById('msg').innerText = "FAILED"; }
         }
     </script>
 </body>
