@@ -15,8 +15,7 @@
         button:hover { background: #4338ca; }
         button:disabled { background: #334155; cursor: not-allowed; }
         #dlRes, #tRes { margin-top: 15px; font-weight: bold; font-size: 0.9rem; min-height: 20px; }
-        .dl-btn { background: #22c55e; color: white; padding: 12px 20px; border-radius: 8px; text-decoration: none; display: inline-block; margin-top: 10px; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        .dl-btn { background: #22c55e; color: white; padding: 12px 20px; border-radius: 8px; text-decoration: none; display: inline-block; margin-top: 10px; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -40,8 +39,8 @@
 </div>
 
 <script>
-    // آپ کا ہگنگ فیس انجن لنک
-    const API = "https://usmansp-hanzababa-engine.hf.space";
+    // آپ کا درست ہگنگ فیس انجن لنک
+    const API = "https://usmansp-hamzababa-engine.hf.space";
 
     async function process(type) {
         const isDl = type === 'download';
