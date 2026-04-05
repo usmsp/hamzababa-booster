@@ -2,47 +2,63 @@
 <html lang="ur">
 <head>
     <meta charset="UTF-8">
-    <title>TK1.io | Social Portal</title>
+    <title>TK1.io | Hamza Baba Ultra Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-black text-white p-5">
-    <div class="max-w-lg mx-auto bg-gray-900 p-8 rounded-2xl shadow-2xl border border-gray-800">
-        <h1 class="text-3xl font-extrabold text-blue-500 mb-8 text-center">TK1.io Dashboard</h1>
+    <div class="max-w-lg mx-auto bg-slate-900 p-8 rounded-3xl shadow-2xl border border-blue-900 mt-10">
+        <h1 class="text-4xl font-black text-blue-500 mb-8 text-center uppercase tracking-widest">TK1 CORE</h1>
 
-        <div class="space-y-6">
-            <div class="p-4 bg-gray-800 rounded-lg">
-                <h2 class="text-green-400 mb-2">📥 Video Downloader</h2>
-                <input id="v_url" type="text" placeholder="Paste link..." class="w-full p-2 rounded bg-gray-700 mb-2">
-                <button onclick="dl()" class="w-full bg-green-600 p-2 rounded font-bold">Get Link</button>
-                <div id="dl_res" class="mt-2 hidden"><a id="dl_btn" href="#" target="_blank" class="text-blue-300 underline">Download Now</a></div>
+        <div class="space-y-8">
+            <div class="p-6 bg-slate-800 rounded-2xl border border-slate-700">
+                <h2 class="text-green-400 font-bold mb-4">📥 FAST DOWNLOADER</h2>
+                <input id="v_url" type="text" placeholder="Link یہاں ڈالیں..." class="w-full p-4 rounded-xl bg-slate-700 mb-4 border border-blue-500 focus:outline-none focus:ring-2 focus:ring-green-500">
+                <button onclick="runDL()" class="w-full bg-green-600 hover:bg-green-700 p-4 rounded-xl font-black text-lg transition-all duration-300">GET DOWNLOAD LINK</button>
+                <div id="dl_area" class="mt-4 hidden animate-bounce text-center">
+                    <a id="final_link" href="#" target="_blank" class="bg-blue-600 p-3 rounded-lg text-white font-bold">CLICK TO SAVE VIDEO</a>
+                </div>
             </div>
 
-            <div class="p-4 bg-gray-800 rounded-lg">
-                <h2 class="text-blue-400 mb-2">🚀 TikTok Booster</h2>
-                <input id="b_url" type="text" placeholder="TikTok Link..." class="w-full p-2 rounded bg-gray-700 mb-2">
-                <button onclick="boost()" class="w-full bg-blue-600 p-2 rounded font-bold">Start Boost</button>
-                <p id="msg" class="text-xs mt-2 text-gray-500 text-center"></p>
+            <div class="p-6 bg-slate-800 rounded-2xl border border-slate-700">
+                <h2 class="text-blue-400 font-bold mb-4">🚀 STEALTH BOOSTER</h2>
+                <input id="b_url" type="text" placeholder="TikTok Link..." class="w-full p-4 rounded-xl bg-slate-700 mb-4 border border-blue-500">
+                <button onclick="runBoost()" class="w-full bg-blue-600 hover:bg-blue-700 p-4 rounded-xl font-black text-lg transition-all">START 50+ VIEWS</button>
+                <p id="status" class="text-center mt-3 text-yellow-500 font-mono text-xs uppercase"></p>
             </div>
         </div>
     </div>
 
     <script>
+        // یہاں آپ کا ہگنگ فیس انجن لنک ہے (لنک بالکل درست ہے)
         const API = "https://usmansp-hanzababa-engine.hf.space";
 
-        async function dl() {
+        async function runDL() {
+            const btn = event.target;
+            btn.innerText = "FETCHING...";
             const url = document.getElementById('v_url').value;
-            const res = await fetch(API+'/download', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({url:url})});
-            const data = await res.json();
-            if(data.status==='success'){
-                document.getElementById('dl_btn').href = data.link;
-                document.getElementById('dl_res').classList.remove('hidden');
-            }
+            try {
+                const res = await fetch(API + '/download', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({url: url})
+                });
+                const data = await res.json();
+                if(data.status === 'success') {
+                    document.getElementById('final_link').href = data.link;
+                    document.getElementById('dl_area').classList.remove('hidden');
+                    btn.innerText = "SUCCESS!";
+                } else { alert("Link Error!"); btn.innerText = "TRY AGAIN"; }
+            } catch(e) { alert("Server Offline!"); btn.innerText = "ERROR"; }
         }
 
-        async function boost() {
+        async function runBoost() {
             const url = document.getElementById('b_url').value;
-            document.getElementById('msg').innerText = "Working... check logs.";
-            await fetch(API+'/start', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({url:url, count:50})});
+            document.getElementById('status').innerText = ">>> STEALTH PROTOCOL INITIATED <<<";
+            await fetch(API + '/start', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({url: url})
+            });
         }
     </script>
 </body>
