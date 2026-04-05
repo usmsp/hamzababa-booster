@@ -1,124 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hamza Baba Media</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hamza Baba Media</title>
 
-    <style>
-        body {
-            background: #0f172a;
-            color: white;
-            font-family: sans-serif;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .card {
-            background: #1e293b;
-            padding: 25px;
-            border-radius: 15px;
-            max-width: 400px;
-            margin: auto;
-            border: 1px solid #334155;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #475569;
-            background: #0f172a;
-            color: white;
-            margin-bottom: 15px;
-        }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: none;
-            background: #4f46e5;
-            color: white;
-            font-weight: bold;
-        }
-
-        #res {
-            margin-top: 20px;
-        }
-
-        .dl-link {
-            background: #22c55e;
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            text-decoration: none;
-            display: block;
-            margin-top: 10px;
-        }
-    </style>
+<style>
+body {
+    background: #0f172a;
+    color: white;
+    font-family: sans-serif;
+    text-align: center;
+    padding: 20px;
+}
+.card {
+    background: #1e293b;
+    padding: 25px;
+    border-radius: 15px;
+    max-width: 400px;
+    margin: auto;
+}
+input, button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+button {
+    background: #4f46e5;
+    color: white;
+    border: none;
+    font-weight: bold;
+}
+.dl-link {
+    display: block;
+    margin-top: 10px;
+    background: green;
+    padding: 10px;
+    color: white;
+    text-decoration: none;
+}
+img {
+    border-radius: 8px;
+    margin-top: 10px;
+}
+</style>
 </head>
 
 <body>
 
-    <h1>HAMZA BABA MEDIA</h1>
+<h1>HAMZA BABA MEDIA</h1>
 
-    <div class="card">
-        <input type="text" id="link" placeholder="Paste Video Link Here...">
-        <button onclick="start()">GET VIDEO</button>
-        <div id="res"></div>
-    </div>
+<div class="card">
+    <input id="link" placeholder="Paste video link here">
+    <button onclick="start()">CHECK LINK</button>
+    <div id="res"></div>
+</div>
 
 <script>
-
-const API = "https://usmansp-hamzababa-engine.hf.space";
+const API = "https://usmansp-hamzababa-engine.hf.space";  // Replace with your Hugging Face endpoint
 
 async function start() {
-
     const val = document.getElementById("link").value;
     const res = document.getElementById("res");
 
-    if (!val) {
-        alert("Link paste karen!");
-        return;
-    }
+    if (!val) return alert("Please paste a video link!");
 
     res.innerHTML = "Processing...";
 
     try {
-
-        const response = await fetch(`${API}/api/download`, {
+        const r = await fetch(API + "/api/download", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ url: val })
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({url: val})
         });
 
-        const data = await response.json();
+        const data = await r.json();
 
         if (data.success) {
-
             res.innerHTML = `
-                <a href="${data.download_url}" target="_blank" class="dl-link">
-                    DOWNLOAD VIDEO
-                </a>
+                <img src="${data.thumbnail}" width="100%"><br><br>
+                <b>${data.title}</b><br><br>
+                <a href="${data.video}" class="dl-link" target="_blank">Download HD</a>
+                <a href="${data.audio}" class="dl-link" target="_blank">Download MP3</a>
             `;
-
         } else {
-
             res.innerText = data.error;
-
         }
 
-    } catch (e) {
-
-        res.innerText = "Server busy. Try again.";
-
+    } catch(e) {
+        res.innerText = "Server error! Try again later.";
     }
-
 }
-
 </script>
 
 </body>
