@@ -2,63 +2,118 @@
 <html lang="ur">
 <head>
     <meta charset="UTF-8">
-    <title>TK1.io | Hamza Baba Ultra Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TK1 CORE | Hamza Baba Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap');
+        .font-cyber { font-family: 'Orbitron', sans-serif; }
+    </style>
 </head>
-<body class="bg-black text-white p-5">
-    <div class="max-w-lg mx-auto bg-slate-900 p-8 rounded-3xl shadow-2xl border border-blue-900 mt-10">
-        <h1 class="text-4xl font-black text-blue-500 mb-8 text-center uppercase tracking-widest">TK1 CORE</h1>
+<body class="bg-black text-white min-h-screen flex items-center justify-center p-4">
 
-        <div class="space-y-8">
-            <div class="p-6 bg-slate-800 rounded-2xl border border-slate-700">
-                <h2 class="text-green-400 font-bold mb-4">📥 FAST DOWNLOADER</h2>
-                <input id="v_url" type="text" placeholder="Link یہاں ڈالیں..." class="w-full p-4 rounded-xl bg-slate-700 mb-4 border border-blue-500 focus:outline-none focus:ring-2 focus:ring-green-500">
-                <button onclick="runDL()" class="w-full bg-green-600 hover:bg-green-700 p-4 rounded-xl font-black text-lg transition-all duration-300">GET DOWNLOAD LINK</button>
-                <div id="dl_area" class="mt-4 hidden animate-bounce text-center">
-                    <a id="final_link" href="#" target="_blank" class="bg-blue-600 p-3 rounded-lg text-white font-bold">CLICK TO SAVE VIDEO</a>
+    <div class="max-w-md w-full bg-slate-900 rounded-3xl shadow-2xl border-2 border-blue-600 p-8">
+        <h1 class="text-center text-3xl font-black font-cyber text-blue-500 mb-8 tracking-tighter">TK1 CORE</h1>
+
+        <div class="space-y-10">
+            <div class="relative group">
+                <h2 class="text-green-400 text-sm font-bold mb-2 flex items-center">
+                    <span class="mr-2">📥</span> FAST DOWNLOADER
+                </h2>
+                <input id="v_url" type="text" placeholder="Paste Video Link..." 
+                    class="w-full bg-slate-800 border border-slate-700 p-4 rounded-xl focus:border-green-500 outline-none transition-all text-sm">
+                <button onclick="runDownload()" id="dl_btn_text"
+                    class="w-full mt-3 bg-green-600 hover:bg-green-500 py-4 rounded-xl font-black uppercase tracking-widest transition-all">
+                    Get Download Link
+                </button>
+                
+                <div id="result_area" class="mt-4 hidden text-center animate-bounce">
+                    <a id="download_link" href="#" target="_blank" 
+                        class="inline-block bg-blue-600 px-6 py-3 rounded-full font-bold text-sm shadow-lg shadow-blue-900/50">
+                        ⚡ CLICK TO DOWNLOAD
+                    </a>
                 </div>
             </div>
 
-            <div class="p-6 bg-slate-800 rounded-2xl border border-slate-700">
-                <h2 class="text-blue-400 font-bold mb-4">🚀 STEALTH BOOSTER</h2>
-                <input id="b_url" type="text" placeholder="TikTok Link..." class="w-full p-4 rounded-xl bg-slate-700 mb-4 border border-blue-500">
-                <button onclick="runBoost()" class="w-full bg-blue-600 hover:bg-blue-700 p-4 rounded-xl font-black text-lg transition-all">START 50+ VIEWS</button>
-                <p id="status" class="text-center mt-3 text-yellow-500 font-mono text-xs uppercase"></p>
+            <div>
+                <h2 class="text-blue-400 text-sm font-bold mb-2 flex items-center">
+                    <span class="mr-2">🚀</span> STEALTH BOOSTER
+                </h2>
+                <input id="b_url" type="text" placeholder="TikTok Video Link..." 
+                    class="w-full bg-slate-800 border border-slate-700 p-4 rounded-xl focus:border-blue-500 outline-none transition-all text-sm text-gray-400">
+                <button onclick="runBoost()" 
+                    class="w-full mt-3 bg-blue-700 hover:bg-blue-600 py-4 rounded-xl font-black uppercase tracking-widest transition-all shadow-lg shadow-blue-900/20">
+                    Start 50+ Views
+                </button>
+                <p id="status_msg" class="text-[10px] text-center mt-3 text-slate-500 font-mono uppercase tracking-widest"></p>
             </div>
+        </div>
+        
+        <div class="mt-10 pt-6 border-t border-slate-800 text-center">
+            <p class="text-gray-600 text-[10px]">POWERED BY HAMZA BABA ENGINE v3.0</p>
         </div>
     </div>
 
     <script>
-        // یہاں آپ کا ہگنگ فیس انجن لنک ہے (لنک بالکل درست ہے)
-        const API = "https://usmansp-hanzababa-engine.hf.space";
+        // عثمان صاحب، یہاں لنک کے آخر میں سلیش (/) لگا دیا ہے تاکہ ایرر نہ آئے
+        const API_BASE = "https://usmansp-hanzababa-engine.hf.space/";
 
-        async function runDL() {
-            const btn = event.target;
-            btn.innerText = "FETCHING...";
-            const url = document.getElementById('v_url').value;
+        async function runDownload() {
+            const btn = document.getElementById('dl_btn_text');
+            const urlInput = document.getElementById('v_url').value;
+            const resArea = document.getElementById('result_area');
+            const dlLink = document.getElementById('download_link');
+
+            if(!urlInput) return alert("Please paste a link first!");
+
+            btn.innerText = "CONNECTING ENGINE...";
+            btn.disabled = true;
+
             try {
-                const res = await fetch(API + '/download', {
+                const response = await fetch(API_BASE + 'download', {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({url: url})
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: urlInput })
                 });
-                const data = await res.json();
+
+                const data = await response.json();
+
                 if(data.status === 'success') {
-                    document.getElementById('final_link').href = data.link;
-                    document.getElementById('dl_area').classList.remove('hidden');
+                    dlLink.href = data.link;
+                    resArea.classList.remove('hidden');
                     btn.innerText = "SUCCESS!";
-                } else { alert("Link Error!"); btn.innerText = "TRY AGAIN"; }
-            } catch(e) { alert("Server Offline!"); btn.innerText = "ERROR"; }
+                    btn.classList.replace('bg-green-600', 'bg-blue-600');
+                } else {
+                    alert("Engine Error: " + (data.message || "Invalid Link"));
+                    btn.innerText = "TRY AGAIN";
+                    btn.disabled = false;
+                }
+            } catch (error) {
+                console.error(error);
+                alert("SERVER OFFLINE! Please check if Hugging Face is Running.");
+                btn.innerText = "SERVER ERROR";
+                btn.disabled = false;
+            }
         }
 
         async function runBoost() {
             const url = document.getElementById('b_url').value;
-            document.getElementById('status').innerText = ">>> STEALTH PROTOCOL INITIATED <<<";
-            await fetch(API + '/start', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({url: url})
-            });
+            const status = document.getElementById('status_msg');
+            
+            if(!url) return alert("Paste TikTok Link!");
+
+            status.innerText = ">>> INITIATING STEALTH PROTOCOL <<<";
+            
+            try {
+                await fetch(API_BASE + 'start', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: url })
+                });
+                status.innerText = ">>> MISSION STARTED: CHECK LOGS <<<";
+            } catch (e) {
+                status.innerText = ">>> CONNECTION FAILED <<<";
+            }
         }
     </script>
 </body>
