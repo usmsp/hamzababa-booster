@@ -6,58 +6,55 @@
     <title>TK1 CORE | Hamza Baba</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-black text-white min-h-screen flex items-center justify-center p-4">
+<body class="bg-black text-white min-h-screen flex items-center justify-center p-4 font-sans text-right">
 
     <div class="max-w-md w-full bg-slate-900 rounded-3xl border-2 border-blue-600 p-8 shadow-2xl">
-        <h1 class="text-center text-3xl font-black text-blue-500 mb-8">TK1 CORE</h1>
+        <h1 class="text-center text-4xl font-black text-blue-500 mb-8 tracking-tighter">TK1 CORE</h1>
 
         <div class="mb-10">
-            <h2 class="text-green-400 text-sm font-bold mb-2 text-left">📥 FAST DOWNLOADER</h2>
-            <input id="v_url" type="text" placeholder="Paste link here..." class="w-full bg-slate-800 p-4 rounded-xl mb-3 outline-none border border-transparent focus:border-green-500">
-            <button onclick="runDL()" id="btn_dl" class="w-full bg-green-600 py-4 rounded-xl font-bold uppercase">Get Link</button>
+            <h2 class="text-green-400 text-sm font-bold mb-2">📥 FAST DOWNLOADER</h2>
+            <input id="v_url" type="text" placeholder="لنک یہاں ڈالیں..." class="w-full bg-slate-800 p-4 rounded-xl mb-3 outline-none border border-transparent focus:border-green-500 text-left">
+            <button onclick="runDL()" id="btn_dl" class="w-full bg-green-600 py-4 rounded-xl font-bold uppercase hover:bg-green-700 transition duration-300">Get Link</button>
             <div id="res_area" class="mt-4 hidden text-center">
-                <a id="final_link" href="#" target="_blank" class="bg-blue-600 px-8 py-3 rounded-full font-bold inline-block">⚡ CLICK TO SAVE</a>
+                <a id="final_link" href="#" target="_blank" class="bg-blue-600 px-10 py-4 rounded-full font-bold inline-block animate-bounce text-sm">⚡ DOWNLOAD NOW</a>
             </div>
         </div>
 
         <div>
-            <h2 class="text-blue-400 text-sm font-bold mb-2 text-left">🚀 STEALTH BOOSTER</h2>
-            <input id="b_url" type="text" placeholder="TikTok Link..." class="w-full bg-slate-800 p-4 rounded-xl mb-3 outline-none">
-            <button onclick="runBoost()" id="btn_boost" class="w-full bg-blue-700 py-4 rounded-xl font-bold uppercase">Start 50+ Views</button>
+            <h2 class="text-blue-400 text-sm font-bold mb-2">🚀 STEALTH BOOSTER</h2>
+            <input id="b_url" type="text" placeholder="TikTok Link..." class="w-full bg-slate-800 p-4 rounded-xl mb-3 outline-none text-left">
+            <button onclick="runBoost()" id="btn_boost" class="w-full bg-blue-700 py-4 rounded-xl font-bold uppercase hover:bg-blue-800 transition duration-300 text-sm">Start Views</button>
             <p id="status_msg" class="text-[10px] text-center mt-3 text-gray-500 font-mono"></p>
         </div>
     </div>
 
     <script>
-        // عثمان صاحب، میں نے اب 'allorigins' کا استعمال کیا ہے جو بلاک نہیں ہوگا
-        const API_TARGET = "https://usmansp-hanzababa-engine.hf.space";
-        const PROXY = "https://api.allorigins.win/get?url=";
+        const API = "https://usmansp-hanzababa-engine.hf.space";
 
         async function runDL() {
             const val = document.getElementById('v_url').value;
             const btn = document.getElementById('btn_dl');
-            if(!val) return alert("Link missing!");
+            if(!val) return alert("لنک غائب ہے!");
             
             btn.innerText = "CONNECTING...";
             btn.disabled = true;
 
             try {
-                // نیا طریقہ: یہ سرور کو بائی پاس کرے گا
-                const response = await fetch(PROXY + encodeURIComponent(API_TARGET + "/download?url=" + val));
+                // براہِ راست کنکشن کا سب سے تیز طریقہ
+                const response = await fetch(`${API}/download?url=${encodeURIComponent(val)}`);
                 const data = await response.json();
-                const result = JSON.parse(data.contents);
 
-                if(result.status === 'success') {
-                    document.getElementById('final_link').href = result.link;
+                if(data.status === 'success') {
+                    document.getElementById('final_link').href = data.link;
                     document.getElementById('res_area').classList.remove('hidden');
                     btn.innerText = "SUCCESS!";
                 } else {
-                    alert("Engine Busy - Try Again");
+                    alert("سرور مصروف ہے، دوبارہ کوشش کریں۔");
                     btn.innerText = "RETRY";
                     btn.disabled = false;
                 }
             } catch(error) { 
-                alert("Please check if Hugging Face is 'Running' and Refresh Page.");
+                alert("کنکشن کا مسئلہ! براہ کرم ایک منٹ بعد دوبارہ ٹیسٹ کریں۔");
                 btn.innerText = "ERROR";
                 btn.disabled = false;
             }
@@ -65,12 +62,13 @@
 
         async function runBoost() {
             const val = document.getElementById('b_url').value;
-            if(!val) return alert("Link missing!");
-            document.getElementById('status_msg').innerText = ">>> INITIATING... <<<";
+            const msg = document.getElementById('status_msg');
+            if(!val) return alert("لنک ڈالیں!");
+            msg.innerText = ">>> INITIATING PROTOCOL <<<";
             try {
-                await fetch(PROXY + encodeURIComponent(API_TARGET + "/start?url=" + val));
-                document.getElementById('status_msg').innerText = ">>> STARTED <<<";
-            } catch(e) { document.getElementById('status_msg').innerText = ">>> FAILED <<<"; }
+                await fetch(`${API}/start?url=${encodeURIComponent(val)}`);
+                msg.innerText = ">>> MISSION STARTED <<<";
+            } catch(e) { msg.innerText = ">>> FAILED <<<"; }
         }
     </script>
 </body>
