@@ -6,68 +6,72 @@
     <title>Hamza Baba Media</title>
     <style>
         body { background: #0f172a; color: white; font-family: sans-serif; text-align: center; padding: 20px; }
-        .container { max-width: 450px; margin: auto; }
-        .card { background: #1e293b; padding: 25px; border-radius: 15px; margin-top: 20px; border: 1px solid #334155; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .card { background: #1e293b; padding: 25px; border-radius: 15px; max-width: 400px; margin: 20px auto; border: 1px solid #334155; }
         input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: white; margin-bottom: 15px; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; border-radius: 8px; border: none; background: #4f46e5; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        button:hover { background: #4338ca; }
-        #resDl, #resBoost { margin-top: 15px; font-weight: bold; }
-        .dl-btn { background: #22c55e; color: white; padding: 12px; border-radius: 8px; text-decoration: none; display: block; margin-top: 10px; }
+        button { width: 100%; padding: 12px; border-radius: 8px; border: none; background: #4f46e5; color: white; font-weight: bold; cursor: pointer; }
+        .dl-btn { background: #22c55e; color: white; padding: 12px; border-radius: 8px; text-decoration: none; display: block; margin-top: 10px; font-weight: bold; cursor: pointer; border: none; width: 100%; }
     </style>
 </head>
 <body>
 
-<div class="container">
     <h1 style="color:#818cf8">HAMZA BABA MEDIA</h1>
     
     <div class="card">
-        <h3>Video Downloader v3.0</h3>
-        <input type="text" id="vUrl" placeholder="Paste Video Link Here...">
-        <button id="btnDl" onclick="run('download')">CHECK LINK</button>
+        <h3>TikTok & Video Downloader</h3>
+        <input type="text" id="vUrl" placeholder="Paste Link Here...">
+        <button id="btnDl" onclick="handleAction('download')">GET VIDEO</button>
         <div id="resDl"></div>
     </div>
-
-    <div class="card">
-        <h3>Traffic Booster (Safe)</h3>
-        <input type="text" id="tUrl" placeholder="Paste Link for Boost...">
-        <button id="btnBoost" onclick="run('boost')">START SYSTEM BOOST</button>
-        <div id="resBoost"></div>
-    </div>
-</div>
 
 <script>
     const API = "https://usmansp-hamzababa-engine.hf.space";
 
-    async function run(type) {
-        const isDl = type === 'download';
-        const url = document.getElementById(isDl ? "vUrl" : "tUrl").value;
-        const res = document.getElementById(isDl ? "resDl" : "resBoost");
-        const btn = document.getElementById(isDl ? "btnDl" : "btnBoost");
-
+    async function handleAction(type) {
+        const url = document.getElementById("vUrl").value;
+        const res = document.getElementById("resDl");
         if(!url) return alert("Link paste karen!");
-        res.innerText = "Processing... Please wait.";
-        btn.disabled = true;
 
+        res.innerHTML = "Processing... Please wait.";
+        
         try {
-            const response = await fetch(`${API}/api/${isDl ? 'download' : 'test-load'}`, {
+            const response = await fetch(`${API}/api/download`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ url: url })
             });
             const data = await response.json();
 
-            if (isDl && data.success) {
-                res.innerHTML = `<span style="color:#22c55e">✓ Video Found!</span><br><a href="${data.download_url}" class="dl-btn">DOWNLOAD VIDEO NOW</a>`;
+            if (data.success) {
+                res.innerHTML = `
+                    <p style="color:#22c55e">✓ Video Linked!</p>
+                    <button class="dl-btn" onclick="secureDownload('${data.download_url}')">DOWNLOAD NOW</button>
+                `;
             } else {
-                res.innerHTML = `<span style="color:#22c55e">${data.message || "Action Successful!"}</span>`;
+                res.innerText = "Error: " + data.error;
             }
         } catch (e) {
-            res.innerHTML = `<span style="color:#ef4444">× Server Error. Make sure HF Space is 'Running'.</span>`;
-        } finally {
-            btn.disabled = false;
+            res.innerText = "Server not responding.";
+        }
+    }
+
+    // یہ فنکشن 403 ایرر کو ختم کرنے کے لیے ویڈیو کو پہلے میموری میں لائے گا
+    async function secureDownload(videoUrl) {
+        document.getElementById("resDl").innerText = "Downloading to phone... 0%";
+        try {
+            const response = await fetch(videoUrl);
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "HamzaBaba_Video.mp4";
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.getElementById("resDl").innerHTML = "<b style='color:white'>Download Finished!</b>";
+        } catch (e) {
+            alert("Error downloading file. Please long press the button.");
         }
     }
 </script>
-
 </body>
 </html>
