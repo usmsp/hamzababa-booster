@@ -1,107 +1,111 @@
 <!DOCTYPE html>
-<html lang="ur">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HAMZA BABA | ULTIMATE HUB</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body { background-color: #050505; color: white; font-family: sans-serif; }
-        .premium-card { background: linear-gradient(145deg, #0f172a, #020617); border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-        .glow-blue { box-shadow: 0 0 20px rgba(59, 130, 246, 0.2); }
-        .glow-red { box-shadow: 0 0 20px rgba(220, 38, 38, 0.2); }
-    </style>
+  <meta charset="UTF-8">
+  <title>Hamza Baba Media</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: #0f172a;
+      color: white;
+      font-family: Arial;
+      text-align: center;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+    }
+    input, button {
+      padding: 12px;
+      margin: 10px;
+      width: 90%;
+      border-radius: 8px;
+      border: none;
+    }
+    button {
+      background: #6366f1;
+      color: white;
+      cursor: pointer;
+    }
+    .card {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 20px;
+    }
+  </style>
 </head>
-<body class="flex flex-col items-center justify-center min-h-screen p-4">
+<body>
 
-    <div class="text-center mb-10">
-        <h1 class="text-6xl font-black italic tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-400">HAMZA BABA</h1>
-        <div class="h-1 w-20 bg-blue-600 mx-auto mt-2 rounded-full"></div>
-    </div>
+<div class="container">
+  <h1>Hamza Baba Media</h1>
 
-    <div class="w-full max-w-md premium-card rounded-[3rem] p-8 mb-8 glow-blue">
-        <p class="text-[10px] font-bold text-blue-500 tracking-[0.3em] uppercase mb-6 italic">Media Downloader v3.0</p>
-        
-        <input id="v_url" type="text" placeholder="لنک یہاں پیسٹ کریں..." 
-            class="w-full bg-black/50 border border-white/10 p-5 rounded-2xl mb-4 text-sm text-center outline-none focus:border-blue-500 transition-all">
-        
-        <button onclick="getMedia()" id="main_btn" class="w-full bg-blue-600 hover:bg-blue-500 py-4 rounded-2xl font-black text-xs tracking-widest uppercase transition-all">
-            Check Link
-        </button>
+  <!-- Downloader Section -->
+  <div class="card">
+    <h2>Video Downloader</h2>
+    <input type="text" id="videoUrl" placeholder="Paste Facebook / TikTok / YouTube URL">
+    <button onclick="downloadVideo()">Download</button>
+    <p id="downloadResult"></p>
+  </div>
 
-        <div id="res_card" class="hidden mt-8 p-6 bg-white/5 rounded-3xl border border-white/10 animate-fade-in">
-            <div class="flex flex-col items-center">
-                <img id="u_avatar" src="" class="w-24 h-24 rounded-full border-4 border-blue-600 shadow-2xl mb-4">
-                <h3 id="u_name" class="font-bold text-lg text-white">@Username</h3>
-                <p id="v_title" class="text-xs text-gray-400 mt-1 text-center italic line-clamp-2 px-4"></p>
-                
-                <button onclick="saveFile()" class="w-full bg-white text-black mt-6 py-4 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-blue-400 hover:text-white transition-all">
-                    Download Video Now
-                </button>
-            </div>
-        </div>
-    </div>
+  <!-- Safe Load Testing Tool -->
+  <div class="card">
+    <h2>Traffic Tester (Safe)</h2>
+    <input type="text" id="testUrl" placeholder="Your own API URL only">
+    <button onclick="testLoad()">Run Test</button>
+    <p id="testResult"></p>
+  </div>
+</div>
 
-    <div class="w-full max-w-md premium-card rounded-[3rem] p-8 glow-red">
-        <div class="flex justify-between items-center mb-6">
-            <p class="text-[10px] font-bold text-red-600 tracking-[0.3em] uppercase italic">System Booster</p>
-            <div class="flex gap-1">
-                <div class="w-1 h-1 bg-red-600 rounded-full animate-ping"></div>
-                <div class="w-1 h-1 bg-red-600 rounded-full"></div>
-            </div>
-        </div>
-        
-        <input id="b_url" type="text" placeholder="بوسٹنگ لنک ڈالیں..." 
-            class="w-full bg-black/50 border border-white/10 p-5 rounded-2xl mb-4 text-xs text-center outline-none focus:border-red-600 transition-all">
-        
-        <button onclick="activateBoost()" id="boost_btn" class="w-full bg-red-900/30 border border-red-600/50 hover:bg-red-600 py-4 rounded-2xl font-black text-xs tracking-widest uppercase transition-all">
-            Start System Boost
-        </button>
-        <p id="boost_msg" class="text-[9px] text-center mt-4 text-gray-500"></p>
-    </div>
+<script>
+const API_BASE = "https://your-huggingface-space-url";
 
-    <script>
-        const API = "https://usmansp-hamzababa-engine.hf.space";
-        let current_dl = "";
+async function downloadVideo() {
+  const url = document.getElementById("videoUrl").value;
+  const result = document.getElementById("downloadResult");
 
-        async function getMedia() {
-            const url = document.getElementById('v_url').value;
-            const btn = document.getElementById('main_btn');
-            if(!url) return;
-            
-            btn.innerText = "SEARCHING...";
-            try {
-                const r = await fetch(`${API}/download?url=${encodeURIComponent(url)}`);
-                const data = await r.json();
-                if(data.status === 'success') {
-                    document.getElementById('u_avatar').src = data.avatar;
-                    document.getElementById('u_name').innerText = data.author;
-                    document.getElementById('v_title').innerText = data.title;
-                    current_dl = data.link;
-                    document.getElementById('res_card').classList.remove('hidden');
-                    btn.innerText = "VIDEO FOUND!";
-                }
-            } catch(e) { btn.innerText = "NOT FOUND - TRY AGAIN"; }
-        }
+  result.innerText = "Fetching...";
 
-        function saveFile() {
-            window.open(current_dl, '_blank');
-        }
+  try {
+    const res = await fetch(`${API_BASE}/api/download`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url })
+    });
 
-        async function activateBoost() {
-            const url = document.getElementById('b_url').value;
-            const btn = document.getElementById('boost_btn');
-            if(!url) return;
-            
-            btn.innerText = "INJECTING SYSTEM...";
-            try {
-                await fetch(`${API}/start?url=${encodeURIComponent(url)}`);
-                setTimeout(() => {
-                    btn.innerText = "BOOST ACTIVE";
-                    document.getElementById('boost_msg').innerText = "System is running on high-speed proxies.";
-                }, 2000);
-            } catch(e) { btn.innerText = "ERROR"; }
-        }
-    </script>
+    const data = await res.json();
+
+    if (data.success) {
+      result.innerHTML = `<a href="${data.download_url}" target="_blank">Download Video</a>`;
+    } else {
+      result.innerText = data.error;
+    }
+  } catch (err) {
+    result.innerText = "Server error";
+  }
+}
+
+async function testLoad() {
+  const url = document.getElementById("testUrl").value;
+  const result = document.getElementById("testResult");
+
+  result.innerText = "Running test...";
+
+  try {
+    const res = await fetch(`${API_BASE}/api/test-load`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url })
+    });
+
+    const data = await res.json();
+    result.innerText = data.message;
+  } catch (err) {
+    result.innerText = "Error running test";
+  }
+}
+</script>
+
 </body>
 </html>
