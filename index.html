@@ -3,81 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TK1 ULTIMATE | Hamza Baba</title>
+    <title>HAMZA BABA | All-In-One Downloader</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
-            background: linear-gradient(-45deg, #0f172a, #1e1b4b, #1e293b, #020617);
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
+            background: radial-gradient(circle at top right, #1e1b4b, #020617);
+            min-height: 100vh;
         }
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        .hamza-card {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
-        .glass-card {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .neon-text {
+            text-shadow: 0 0 10px rgba(96, 165, 250, 0.5);
         }
-        .neon-glow {
-            box-shadow: 0 0 20px rgba(37, 99, 235, 0.4);
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
         }
     </style>
 </head>
-<body class="text-white min-h-screen flex flex-col items-center p-4 font-sans">
-    
-    <div class="mt-10 mb-8 text-center">
-        <h1 class="text-4xl font-black tracking-tighter italic text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">TK1 ULTIMATE</h1>
-        <p class="text-[10px] text-blue-400 tracking-[0.5em] uppercase font-bold mt-2">Powered by Hamza Baba Tech</p>
+<body class="text-white flex flex-col items-center p-6 font-sans">
+
+    <div class="mt-12 mb-10 text-center animate-float">
+        <h1 class="text-5xl font-black italic tracking-tighter text-blue-500 neon-text">HAMZA BABA</h1>
+        <div class="h-1 w-20 bg-blue-500 mx-auto mt-2 rounded-full"></div>
+        <p class="text-[10px] text-gray-400 tracking-[0.4em] uppercase mt-4 font-bold">Global Media Downloader</p>
     </div>
 
-    <div class="w-full max-w-md glass-card rounded-[2.5rem] p-8 neon-glow mb-6">
+    <div class="w-full max-w-lg hamza-card rounded-[3rem] p-8 mb-8">
+        <div class="flex justify-between items-center mb-6 px-2">
+            <span class="text-[10px] font-bold text-blue-400 bg-blue-900/30 px-3 py-1 rounded-full uppercase">Universal Engine v3.0</span>
+            <div class="flex gap-2">
+                <div class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+                <div class="w-2 h-2 rounded-full bg-green-500"></div>
+            </div>
+        </div>
+
         <div class="relative group">
-            <input id="v_url" type="text" oninput="autoFetch()" placeholder="ٹک ٹاک لنک یہاں پیسٹ کریں..." 
-                class="w-full bg-slate-950/50 border-2 border-slate-800 p-5 rounded-2xl mb-4 text-center outline-none focus:border-blue-500 transition-all text-sm group-hover:border-slate-700">
-            <div id="loading_spinner" class="hidden absolute right-4 top-5">
-                <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500"></div>
+            <input id="v_url" type="text" oninput="autoFetch()" placeholder="FB, YT, or TikTok link here..." 
+                class="w-full bg-slate-950/80 border-2 border-slate-800 p-6 rounded-3xl mb-4 text-center outline-none focus:border-blue-600 transition-all group-hover:bg-black">
+            <div id="loading_spinner" class="hidden absolute right-6 top-6">
+                <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
             </div>
         </div>
         
-        <button onclick="getTiktok()" id="main_btn" class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 py-4 rounded-2xl font-black text-sm tracking-widest transition-all shadow-lg active:scale-95">DOWNLOAD NOW</button>
+        <button onclick="getTiktok()" id="main_btn" class="w-full bg-blue-600 hover:bg-blue-500 py-5 rounded-2xl font-black text-sm tracking-widest transition-all shadow-2xl active:scale-95 shadow-blue-900/20">FETCH VIDEO</button>
 
-        <div id="res_card" class="hidden mt-8 animate-in fade-in zoom-in duration-500">
-            <div class="bg-slate-950/40 rounded-3xl p-5 border border-white/5 flex items-center gap-5 mb-6">
-                <img id="u_avatar" src="" class="w-20 h-20 rounded-full border-4 border-blue-500/20 shadow-2xl">
-                <div class="overflow-hidden">
-                    <h3 id="u_name" class="font-black text-blue-400 text-xl truncate">@Username</h3>
-                    <p id="v_title" class="text-xs text-gray-500 truncate mt-1">Ready to download...</p>
+        <div id="res_card" class="hidden mt-10 animate-in fade-in slide-in-from-bottom-5 duration-700">
+            <div class="bg-black/40 rounded-[2rem] p-6 border border-white/5 mb-6">
+                <div class="flex items-center gap-6">
+                    <img id="u_avatar" src="" class="w-24 h-24 rounded-2xl border-2 border-blue-500/30 object-cover shadow-2xl">
+                    <div class="overflow-hidden">
+                        <h3 id="u_name" class="font-bold text-blue-400 text-xl truncate">@HamzaBabaUser</h3>
+                        <p id="v_title" class="text-xs text-gray-500 mt-2 italic">Video detected by Hamza Baba Engine</p>
+                    </div>
                 </div>
             </div>
             
             <div class="grid grid-cols-1 gap-4">
-                <button onclick="save('hd')" class="w-full bg-white text-black py-4 rounded-2xl font-bold text-xs hover:bg-gray-200 transition-all shadow-xl">🚀 WITHOUT WATERMARK (HD)</button>
-                <button onclick="save('sd')" class="w-full bg-slate-800 py-4 rounded-2xl font-bold text-xs hover:bg-slate-700 transition-all border border-white/5">🎞️ NORMAL VIDEO</button>
+                <button onclick="save('hd')" class="w-full bg-white text-black py-4 rounded-2xl font-black text-xs hover:bg-blue-400 hover:text-white transition-all">🚀 DOWNLOAD HIGH QUALITY (HD)</button>
+                <button onclick="save('sd')" class="w-full bg-slate-800/50 py-4 rounded-2xl font-bold text-xs hover:bg-slate-700 transition-all border border-white/5">🎞️ SERVER 2 (MP4)</button>
             </div>
         </div>
     </div>
 
-    <div class="w-full max-w-md glass-card rounded-[2rem] p-6 border-blue-900/20 shadow-inner">
-        <h2 class="text-center text-blue-400 text-[9px] font-bold mb-4 tracking-[0.3em] uppercase opacity-60">System Booster v2.0</h2>
-        <input id="b_url" type="text" placeholder="بوسٹنگ لنک ڈالیں..." 
-            class="w-full bg-slate-950/30 border border-slate-800 p-4 rounded-xl mb-4 text-center outline-none focus:border-blue-900 text-xs">
-        <button onclick="runBoost()" id="boost_btn" class="w-full bg-blue-900/20 border border-blue-800 hover:bg-blue-900/40 py-3 rounded-xl font-bold text-[10px] transition-all">ACTIVATE BOOSTING</button>
+    <div class="flex gap-4 opacity-40 grayscale hover:grayscale-0 transition-all duration-700">
+        <img src="https://cdn-icons-png.flaticon.com/512/3670/3670151.png" class="w-6 h-6">
+        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968764.png" class="w-6 h-6">
+        <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" class="w-6 h-6">
+    </div>
+
+    <div class="mt-12 text-center">
+        <p class="text-[9px] text-gray-600 font-bold uppercase tracking-[0.6em]">Hamza Baba Global Enterprise</p>
     </div>
 
     <script>
         const API = "https://usmansp-hamzababa-engine.hf.space";
-        let dl_hd = ""; let dl_sd = "";
+        let dl_hd = "";
 
-        // آٹو میٹک چیک کرنے والا فنکشن
         function autoFetch() {
             const val = document.getElementById('v_url').value;
-            if(val.includes("tiktok.com")) {
+            if(val.includes("http") && val.length > 15) {
                 document.getElementById('loading_spinner').classList.remove('hidden');
-                // جیسے ہی لنک مکمل ہوگا، خود ہی سرچ شروع کر دے گا
-                if(val.length > 25) getTiktok();
+                getTiktok();
             }
         }
 
@@ -86,52 +100,38 @@
             const btn = document.getElementById('main_btn');
             if(!val) return;
             
-            btn.innerText = "PROCESSING..."; 
-            document.getElementById('loading_spinner').classList.remove('hidden');
-
+            btn.innerText = "HAMZA BABA ENGINE WORKING..."; 
             try {
                 const r = await fetch(`${API}/download?url=${encodeURIComponent(val)}`);
                 const data = await r.json();
                 if(data.status === 'success') {
                     document.getElementById('u_avatar').src = data.avatar;
-                    document.getElementById('u_name').innerText = "@" + data.author;
+                    document.getElementById('u_name').innerText = data.author;
                     document.getElementById('v_title').innerText = data.title;
-                    dl_hd = data.hd_link; dl_sd = data.link;
+                    dl_hd = data.link;
                     document.getElementById('res_card').classList.remove('hidden');
-                    btn.innerText = "SUCCESSFULLY READY";
+                    btn.innerText = "VIDEO CAPTURED!";
                     document.getElementById('loading_spinner').classList.add('hidden');
                 }
             } catch(e) { 
-                btn.innerText = "ERROR - TRY AGAIN"; 
+                btn.innerText = "LINK EXPIRED or PRIVATE";
                 document.getElementById('loading_spinner').classList.add('hidden');
             }
         }
 
         async function save(type) {
-            const link = type === 'hd' ? dl_hd : dl_sd;
-            const b = event.target; b.innerText = "DOWNLOADING...";
+            const b = event.target; b.innerText = "PREPARING FILE...";
             try {
-                const resp = await fetch(link);
+                const resp = await fetch(dl_hd);
                 const blob = await resp.blob();
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = `HamzaBaba_TK1_${Date.now()}.mp4`;
+                a.download = `HamzaBaba_Master_${Date.now()}.mp4`;
                 document.body.appendChild(a); a.click();
-                b.innerText = "FILE SAVED!";
-                setTimeout(() => b.innerText = (type === 'hd' ? "🚀 WITHOUT WATERMARK (HD)" : "🎞️ NORMAL VIDEO"), 2000);
-            } catch(e) { b.innerText = "ERROR!"; }
-        }
-
-        async function runBoost() {
-            const val = document.getElementById('b_url').value;
-            const btn = document.getElementById('boost_btn');
-            if(!val) return alert("لنک غائب ہے!");
-            btn.innerText = "SYSTEM INJECTING...";
-            try {
-                await fetch(`${API}/start?url=${encodeURIComponent(val)}`);
-                setTimeout(() => { btn.innerText = "BOOSTING ACTIVE"; }, 2000);
-            } catch(e) { btn.innerText = "ERROR!"; }
+                b.innerText = "DOWNLOAD STARTED!";
+                setTimeout(() => b.innerText = "🚀 DOWNLOAD HIGH QUALITY (HD)", 2000);
+            } catch(e) { b.innerText = "PLEASE TRY AGAIN"; }
         }
     </script>
 </body>
