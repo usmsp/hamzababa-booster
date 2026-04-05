@@ -13,7 +13,7 @@
 
         <div class="mb-10">
             <h2 class="text-green-400 text-sm font-bold mb-2">📥 FAST DOWNLOADER</h2>
-            <input id="v_url" type="text" placeholder="Paste link here..." class="w-full bg-slate-800 p-4 rounded-xl mb-3 outline-none border border-transparent focus:border-green-500">
+            <input id="v_url" type="text" placeholder="Paste link here..." class="w-full bg-slate-800 p-4 rounded-xl mb-3 outline-none border border-transparent focus:border-green-500 text-white">
             <button onclick="runDL()" id="btn_dl" class="w-full bg-green-600 py-4 rounded-xl font-bold uppercase hover:bg-green-700 transition">Get Link</button>
             <div id="res_area" class="mt-4 hidden text-center">
                 <a id="final_link" href="#" target="_blank" class="bg-blue-600 px-8 py-3 rounded-full font-bold inline-block">⚡ CLICK TO SAVE</a>
@@ -22,15 +22,15 @@
 
         <div>
             <h2 class="text-blue-400 text-sm font-bold mb-2">🚀 STEALTH BOOSTER</h2>
-            <input id="b_url" type="text" placeholder="TikTok Link..." class="w-full bg-slate-800 p-4 rounded-xl mb-3 outline-none">
+            <input id="b_url" type="text" placeholder="TikTok Link..." class="w-full bg-slate-800 p-4 rounded-xl mb-3 outline-none text-white">
             <button onclick="runBoost()" id="btn_boost" class="w-full bg-blue-700 py-4 rounded-xl font-bold uppercase hover:bg-blue-800 transition">Start 50+ Views</button>
             <p id="status_msg" class="text-[10px] text-center mt-3 text-gray-500 font-mono"></p>
         </div>
     </div>
 
     <script>
-        // عثمان صاحب، یہاں لنک میں کوئی غلطی نہیں ہے اب
-        const API = "https://usmansp-hanzababa-engine.hf.space";
+        // عثمان صاحب، یہاں پراکسی لنک ڈال دیا ہے تاکہ ہگنگ فیس کنیکٹ ہو جائے
+        const API = "https://usmansp-hanzababa-engine.hf.space/proxy/7860";
 
         async function runDL() {
             const val = document.getElementById('v_url').value;
@@ -58,7 +58,7 @@
                     btn.disabled = false;
                 }
             } catch(error) { 
-                alert("SERVER OFFLINE! Please check Hugging Face Space.");
+                alert("SERVER OFFLINE! Please check if Hugging Face is Running.");
                 btn.innerText = "ERROR";
                 btn.disabled = false;
             }
