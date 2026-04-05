@@ -1,61 +1,87 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hamza Baba Media</title>
+    <title>Hamza Baba Media | Pro Tool</title>
     <style>
-        body { background: #0f172a; color: white; font-family: sans-serif; text-align: center; padding: 20px; }
-        .card { background: #1e293b; padding: 20px; border-radius: 12px; margin: 20px auto; max-width: 400px; border: 1px solid #334155; }
-        input { width: 90%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: none; }
-        button { width: 95%; padding: 10px; background: #4f46e5; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        .dl-btn { display: inline-block; background: #22c55e; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; margin-top: 15px; }
+        body { background: #0f172a; color: white; font-family: 'Segoe UI', sans-serif; text-align: center; padding: 20px; margin: 0; }
+        .container { max-width: 450px; margin: auto; padding: 10px; }
+        h1 { color: #818cf8; text-transform: uppercase; margin-bottom: 30px; letter-spacing: 1px; }
+        .card { background: #1e293b; padding: 25px; border-radius: 15px; margin-top: 20px; border: 1px solid #334155; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        h3 { margin-bottom: 15px; color: #cbd5e1; }
+        input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #475569; background: #0f172a; color: white; margin-bottom: 15px; box-sizing: border-box; outline: none; }
+        button { width: 100%; padding: 12px; border-radius: 8px; border: none; background: #4f46e5; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #4338ca; }
+        button:disabled { background: #334155; cursor: not-allowed; }
+        #dlRes, #tRes { margin-top: 15px; font-weight: bold; font-size: 0.9rem; min-height: 20px; }
+        .dl-btn { background: #22c55e; color: white; padding: 12px 20px; border-radius: 8px; text-decoration: none; display: inline-block; margin-top: 10px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
     </style>
 </head>
 <body>
+
+<div class="container">
     <h1>HAMZA BABA MEDIA</h1>
     
     <div class="card">
-        <h3>Video Downloader</h3>
-        <input type="text" id="vUrl" placeholder="Paste Link Here">
-        <button onclick="process('download')">CHECK LINK</button>
+        <h3>Video Downloader v3.0</h3>
+        <input type="text" id="vUrl" placeholder="Paste Video Link Here...">
+        <button id="btnDl" onclick="process('download')">CHECK LINK</button>
         <div id="dlRes"></div>
     </div>
 
     <div class="card">
-        <h3>Traffic Booster</h3>
-        <input type="text" id="tUrl" placeholder="Paste Link for Boost">
-        <button onclick="process('boost')">START BOOST</button>
+        <h3>Traffic Booster (Safe)</h3>
+        <input type="text" id="tUrl" placeholder="Paste Video Link for Boost...">
+        <button id="btnBoost" onclick="process('boost')">START SYSTEM BOOST</button>
         <div id="tRes"></div>
     </div>
+</div>
 
-    <script>
-        const API = "https://usmansp-hanzababa-engine.hf.space";
+<script>
+    // آپ کا ہگنگ فیس انجن لنک
+    const API = "https://usmansp-hanzababa-engine.hf.space";
 
-        async function process(type) {
-            const isDl = type === 'download';
-            const url = document.getElementById(isDl ? "vUrl" : "tUrl").value;
-            const resDiv = document.getElementById(isDl ? "dlRes" : "tRes");
-            
-            if(!url) return alert("Paste link first!");
-            resDiv.innerText = "Processing...";
+    async function process(type) {
+        const isDl = type === 'download';
+        const urlInput = document.getElementById(isDl ? "vUrl" : "tUrl");
+        const resDiv = document.getElementById(isDl ? "dlRes" : "tRes");
+        const btn = document.getElementById(isDl ? "btnDl" : "btnBoost");
 
-            try {
-                const response = await fetch(`${API}/api/${isDl ? 'download' : 'test-load'}`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ url: url })
-                });
-                const data = await response.json();
+        const url = urlInput.value.trim();
+        if(!url) return alert("Please paste a link first!");
 
-                if(isDl && data.success) {
-                    resDiv.innerHTML = `<a href="${data.download_url}" target="_blank" class="dl-btn">DOWNLOAD VIDEO NOW</a>`;
-                } else {
-                    resDiv.innerText = data.message || data.error || "Done!";
-                }
-            } catch (e) {
-                resDiv.innerText = "Server Error. Try again.";
+        resDiv.style.color = "#fbbf24";
+        resDiv.innerText = isDl ? "🔍 Searching on Server..." : "🚀 Injecting Traffic Signals...";
+        btn.disabled = true;
+
+        try {
+            const response = await fetch(`${API}/api/${isDl ? 'download' : 'test-load'}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ url: url })
+            });
+
+            const data = await response.json();
+
+            if (isDl && data.success) {
+                resDiv.innerHTML = `<span style="color:#22c55e">✓ Video Found!</span><br><a href="${data.download_url}" target="_blank" class="dl-btn">DOWNLOAD VIDEO NOW</a>`;
+            } else if (!isDl) {
+                resDiv.style.color = "#22c55e";
+                resDiv.innerText = "✓ " + (data.message || "Boost Completed!");
+            } else {
+                resDiv.style.color = "#ef4444";
+                resDiv.innerText = "× Error: " + (data.error || "System Busy");
             }
+        } catch (err) {
+            resDiv.style.color = "#ef4444";
+            resDiv.innerText = "× Server Not Responding. Check HF Space Status.";
+        } finally {
+            btn.disabled = false;
         }
-    </script>
+    }
+</script>
+
 </body>
 </html>
