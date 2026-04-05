@@ -5,78 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TK1 CORE | Hamza Baba</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap');
-        .cyber-font { font-family: 'Orbitron', sans-serif; }
-    </style>
 </head>
-<body class="bg-black text-white min-h-screen flex items-center justify-center p-4 font-sans">
-
-    <div class="max-w-md w-full bg-slate-900 rounded-3xl border-2 border-blue-600 p-8 shadow-[0_0_20px_rgba(37,99,235,0.5)]">
-        <h1 class="text-center text-4xl font-black text-blue-500 mb-8 tracking-tighter cyber-font">TK1 CORE</h1>
-
-        <div class="mb-10">
-            <h2 class="text-green-400 text-xs font-bold mb-2 tracking-widest uppercase">📥 Super Fast Downloader</h2>
-            <input id="v_url" type="text" placeholder="لنک یہاں پیسٹ کریں..." 
-                class="w-full bg-slate-800 p-4 rounded-xl mb-3 outline-none border border-transparent focus:border-green-500 text-left">
-            
-            <button onclick="runDL()" id="btn_dl" 
-                class="w-full bg-green-600 py-4 rounded-xl font-bold uppercase hover:bg-green-700 transition duration-300 shadow-lg active:scale-95">
-                Get Link
-            </button>
-
-            <div id="res_area" class="mt-6 hidden text-center animate-pulse">
-                <a id="final_link" href="#" target="_blank" 
-                    class="bg-blue-600 px-10 py-4 rounded-full font-bold inline-block text-sm shadow-[0_0_15px_rgba(37,99,235,0.8)]">
-                    ⚡ DOWNLOAD NOW
-                </a>
+<body class="bg-black text-white min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-slate-900 rounded-3xl border-2 border-blue-600 p-8 shadow-2xl">
+        <h1 class="text-center text-4xl font-black text-blue-500 mb-8">TK1 CORE</h1>
+        <div>
+            <h2 class="text-green-400 text-sm font-bold mb-2">📥 FAST DOWNLOADER</h2>
+            <input id="v_url" type="text" placeholder="لنک یہاں ڈالیں..." class="w-full bg-slate-800 p-4 rounded-xl mb-3 outline-none border border-transparent focus:border-green-500 text-left text-white">
+            <button onclick="runDL()" id="btn_dl" class="w-full bg-green-600 py-4 rounded-xl font-bold uppercase hover:bg-green-700 active:scale-95">Get Link</button>
+            <div id="res_area" class="mt-4 hidden text-center">
+                <a id="final_link" href="#" target="_blank" class="bg-blue-600 px-10 py-4 rounded-full font-bold inline-block">⚡ DOWNLOAD NOW</a>
             </div>
-        </div>
-
-        <div class="pt-6 border-t border-slate-800 text-center">
-            <p class="text-[10px] text-gray-500 tracking-widest uppercase">Powered by Hamza Baba Travels</p>
         </div>
     </div>
 
     <script>
-        // عثمان صاحب، یہ وہ درست لنک ہے جو آپ نے تصویر میں بھیجا تھا
+        // عثمان صاحب، یہاں آپ کا وہ 'Direct URL' ہے جو تصویر میں تھا
         const API = "https://usmansp-hamzababa-engine.hf.space";
 
         async function runDL() {
-            const urlInput = document.getElementById('v_url').value;
+            const val = document.getElementById('v_url').value;
             const btn = document.getElementById('btn_dl');
-            const resArea = document.getElementById('res_area');
-
-            if(!urlInput) {
-                alert("براہ کرم لنک ڈالیں!");
-                return;
-            }
-
-            // بٹن کو لاک کریں تاکہ بار بار کلک نہ ہو
+            if(!val) return alert("لنک غائب ہے!");
+            
             btn.innerText = "CONNECTING...";
             btn.disabled = true;
-            resArea.classList.add('hidden');
 
             try {
-                // سرور سے رابطہ
-                const response = await fetch(`${API}/download?url=${encodeURIComponent(urlInput)}`);
-                
-                if (!response.ok) throw new Error('Server issues');
-                
+                // یہ لائن اب بالکل درست طریقے سے لکھی گئی ہے
+                const response = await fetch(`${API}/download?url=${encodeURIComponent(val)}`);
                 const data = await response.json();
 
-                if(data.status === 'success' && data.link) {
+                if(data.status === 'success') {
                     document.getElementById('final_link').href = data.link;
-                    resArea.classList.remove('hidden');
-                    btn.innerText = "LINK FOUND!";
-                    btn.classList.replace('bg-green-600', 'bg-blue-600');
+                    document.getElementById('res_area').classList.remove('hidden');
+                    btn.innerText = "SUCCESS!";
                 } else {
-                    alert("لنک نہیں مل سکا۔ دوبارہ کوشش کریں یا سرور چیک کریں۔");
+                    alert("سرور مصروف ہے، دوبارہ کوشش کریں۔");
                     resetBtn(btn);
                 }
-            } catch(error) {
-                console.error(error);
-                alert("کنکشن کا مسئلہ! یقینی بنائیں کہ ہگنگ فیس پر سرور 'Running' حالت میں ہے۔");
+            } catch(error) { 
+                alert("کنکشن فیل! براؤزر کا کیشے صاف کر کے دوبارہ چیک کریں۔");
                 resetBtn(btn);
             }
         }
@@ -84,8 +53,8 @@
         function resetBtn(btn) {
             btn.innerText = "RETRY";
             btn.disabled = false;
-            btn.classList.add('bg-red-600');
         }
     </script>
 </body>
 </html>
+
