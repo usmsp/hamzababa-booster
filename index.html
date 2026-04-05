@@ -13,61 +13,73 @@
 
         <div class="mb-10">
             <h2 class="text-green-400 text-sm font-bold mb-2">📥 FAST DOWNLOADER</h2>
-            <input id="v_url" type="text" placeholder="Paste link here..." class="w-full bg-slate-800 p-4 rounded-xl mb-3 outline-none focus:border-green-500 border border-transparent">
-            <button onclick="runDL()" id="btn" class="w-full bg-green-600 py-4 rounded-xl font-bold uppercase">Get Link</button>
-            <div id="res" class="mt-4 hidden text-center">
-                <a id="dl_link" href="#" target="_blank" class="bg-blue-600 px-8 py-3 rounded-full font-bold">⚡ CLICK TO SAVE</a>
+            <input id="v_url" type="text" placeholder="Paste link here..." class="w-full bg-slate-800 p-4 rounded-xl mb-3 outline-none border border-transparent focus:border-green-500">
+            <button onclick="runDL()" id="btn_dl" class="w-full bg-green-600 py-4 rounded-xl font-bold uppercase hover:bg-green-700 transition">Get Link</button>
+            <div id="res_area" class="mt-4 hidden text-center">
+                <a id="final_link" href="#" target="_blank" class="bg-blue-600 px-8 py-3 rounded-full font-bold inline-block">⚡ CLICK TO SAVE</a>
             </div>
         </div>
 
         <div>
             <h2 class="text-blue-400 text-sm font-bold mb-2">🚀 STEALTH BOOSTER</h2>
             <input id="b_url" type="text" placeholder="TikTok Link..." class="w-full bg-slate-800 p-4 rounded-xl mb-3 outline-none">
-            <button onclick="runBoost()" class="w-full bg-blue-700 py-4 rounded-xl font-bold uppercase">Start 50+ Views</button>
-            <p id="msg" class="text-[10px] text-center mt-3 text-gray-500"></p>
+            <button onclick="runBoost()" id="btn_boost" class="w-full bg-blue-700 py-4 rounded-xl font-bold uppercase hover:bg-blue-800 transition">Start 50+ Views</button>
+            <p id="status_msg" class="text-[10px] text-center mt-3 text-gray-500 font-mono"></p>
         </div>
     </div>
 
     <script>
-        // عثمان صاحب، یہ لنک اب بالکل لاک کر دیا گیا ہے
+        // عثمان صاحب، یہاں لنک میں کوئی غلطی نہیں ہے اب
         const API = "https://usmansp-hanzababa-engine.hf.space";
 
         async function runDL() {
             const val = document.getElementById('v_url').value;
-            const btn = document.getElementById('btn');
-            if(!val) return alert("Link missing!");
+            const btn = document.getElementById('btn_dl');
+            if(!val) return alert("Please paste a link first!");
             
             btn.innerText = "CONNECTING...";
+            btn.disabled = true;
+
             try {
-                const r = await fetch(`${API}/download`, {
+                const response = await fetch(API + "/download", {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({url: val})
                 });
-                const d = await r.json();
-                if(d.status === 'success') {
-                    document.getElementById('dl_link').href = d.link;
-                    document.getElementById('res').classList.remove('hidden');
-                    btn.innerText = "DONE!";
-                } else { alert("Error from Engine"); btn.innerText = "RETRY"; }
-            } catch(e) { 
-                alert("SERVER OFFLINE! Please Refresh Hugging Face.");
+                const data = await response.json();
+
+                if(data.status === 'success') {
+                    document.getElementById('final_link').href = data.link;
+                    document.getElementById('res_area').classList.remove('hidden');
+                    btn.innerText = "SUCCESS!";
+                } else {
+                    alert("Engine Error: " + data.message);
+                    btn.innerText = "TRY AGAIN";
+                    btn.disabled = false;
+                }
+            } catch(error) { 
+                alert("SERVER OFFLINE! Please check Hugging Face Space.");
                 btn.innerText = "ERROR";
+                btn.disabled = false;
             }
         }
 
         async function runBoost() {
             const val = document.getElementById('b_url').value;
-            if(!val) return alert("Link missing!");
-            document.getElementById('msg').innerText = "WORKING...";
+            const msg = document.getElementById('status_msg');
+            if(!val) return alert("Paste TikTok Link!");
+
+            msg.innerText = ">>> INITIATING PROTOCOL <<<";
             try {
-                await fetch(`${API}/start`, {
+                await fetch(API + "/start", {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({url: val})
                 });
-                document.getElementById('msg').innerText = "STARTED SUCCESSFULLY";
-            } catch(e) { document.getElementById('msg').innerText = "FAILED"; }
+                msg.innerText = ">>> MISSION STARTED SUCCESSFULLY <<<";
+            } catch(e) { 
+                msg.innerText = ">>> CONNECTION FAILED <<<"; 
+            }
         }
     </script>
 </body>
