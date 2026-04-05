@@ -3,53 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TK1 MASTER | Hamza Baba</title>
+    <title>TK1 ULTIMATE | Hamza Baba</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(-45deg, #0f172a, #1e1b4b, #1e293b, #020617);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .glass-card {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .neon-glow {
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.4);
+        }
+    </style>
 </head>
-<body class="bg-slate-950 text-white min-h-screen flex flex-col items-center p-4 font-sans">
+<body class="text-white min-h-screen flex flex-col items-center p-4 font-sans">
     
-    <h1 class="text-3xl font-black text-blue-500 my-8 italic tracking-tighter">TK1 MASTER</h1>
+    <div class="mt-10 mb-8 text-center">
+        <h1 class="text-4xl font-black tracking-tighter italic text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">TK1 ULTIMATE</h1>
+        <p class="text-[10px] text-blue-400 tracking-[0.5em] uppercase font-bold mt-2">Powered by Hamza Baba Tech</p>
+    </div>
 
-    <div class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl mb-6">
-        <h2 class="text-center text-green-500 text-[10px] font-bold mb-4 tracking-widest uppercase">📥 Video Downloader</h2>
-        <input id="v_url" type="text" placeholder="ویڈیو لنک یہاں ڈالیں..." 
-            class="w-full bg-slate-800 border border-slate-700 p-4 rounded-2xl mb-4 text-center outline-none focus:border-green-500">
-        <button onclick="getTiktok()" id="main_btn" class="w-full bg-green-600 hover:bg-green-700 py-4 rounded-2xl font-bold transition shadow-lg">GET VIDEO DETAILS</button>
+    <div class="w-full max-w-md glass-card rounded-[2.5rem] p-8 neon-glow mb-6">
+        <div class="relative group">
+            <input id="v_url" type="text" oninput="autoFetch()" placeholder="ٹک ٹاک لنک یہاں پیسٹ کریں..." 
+                class="w-full bg-slate-950/50 border-2 border-slate-800 p-5 rounded-2xl mb-4 text-center outline-none focus:border-blue-500 transition-all text-sm group-hover:border-slate-700">
+            <div id="loading_spinner" class="hidden absolute right-4 top-5">
+                <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500"></div>
+            </div>
+        </div>
+        
+        <button onclick="getTiktok()" id="main_btn" class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 py-4 rounded-2xl font-black text-sm tracking-widest transition-all shadow-lg active:scale-95">DOWNLOAD NOW</button>
 
-        <div id="res_card" class="hidden mt-8 border-t border-slate-800 pt-6">
-            <div class="flex items-center gap-4 bg-slate-800/50 p-4 rounded-2xl border border-slate-700 mb-6">
-                <img id="u_avatar" src="" class="w-16 h-16 rounded-full border-2 border-blue-500 shadow-md">
-                <div class="overflow-hidden text-left">
-                    <h3 id="u_name" class="font-bold text-blue-400 text-lg">@Username</h3>
-                    <p id="v_title" class="text-[10px] text-gray-400 truncate">Video description...</p>
+        <div id="res_card" class="hidden mt-8 animate-in fade-in zoom-in duration-500">
+            <div class="bg-slate-950/40 rounded-3xl p-5 border border-white/5 flex items-center gap-5 mb-6">
+                <img id="u_avatar" src="" class="w-20 h-20 rounded-full border-4 border-blue-500/20 shadow-2xl">
+                <div class="overflow-hidden">
+                    <h3 id="u_name" class="font-black text-blue-400 text-xl truncate">@Username</h3>
+                    <p id="v_title" class="text-xs text-gray-500 truncate mt-1">Ready to download...</p>
                 </div>
             </div>
-            <div class="grid grid-cols-1 gap-3">
-                <button onclick="save('hd')" class="w-full bg-blue-600 py-3 rounded-xl font-bold text-sm shadow-lg">DOWNLOAD HD (NO WATERMARK)</button>
-                <button onclick="save('sd')" class="w-full bg-slate-700 py-3 rounded-xl font-bold text-sm">NORMAL DOWNLOAD</button>
+            
+            <div class="grid grid-cols-1 gap-4">
+                <button onclick="save('hd')" class="w-full bg-white text-black py-4 rounded-2xl font-bold text-xs hover:bg-gray-200 transition-all shadow-xl">🚀 WITHOUT WATERMARK (HD)</button>
+                <button onclick="save('sd')" class="w-full bg-slate-800 py-4 rounded-2xl font-bold text-xs hover:bg-slate-700 transition-all border border-white/5">🎞️ NORMAL VIDEO</button>
             </div>
         </div>
     </div>
 
-    <div class="w-full max-w-md bg-slate-900 border border-blue-900/30 rounded-3xl p-6 shadow-2xl">
-        <h2 class="text-center text-blue-400 text-[10px] font-bold mb-4 tracking-widest uppercase">🚀 TikTok Stealth Booster</h2>
-        <input id="b_url" type="text" placeholder="بوسٹنگ لنک یہاں ڈالیں..." 
-            class="w-full bg-slate-800 border border-slate-700 p-4 rounded-2xl mb-4 text-center outline-none focus:border-blue-500 text-sm">
-        <button onclick="runBoost()" id="boost_btn" class="w-full bg-blue-700 hover:bg-blue-800 py-4 rounded-2xl font-bold transition shadow-lg">START BOOSTING</button>
-        <p id="boost_status" class="text-[10px] text-center mt-3 text-gray-500 italic"></p>
+    <div class="w-full max-w-md glass-card rounded-[2rem] p-6 border-blue-900/20 shadow-inner">
+        <h2 class="text-center text-blue-400 text-[9px] font-bold mb-4 tracking-[0.3em] uppercase opacity-60">System Booster v2.0</h2>
+        <input id="b_url" type="text" placeholder="بوسٹنگ لنک ڈالیں..." 
+            class="w-full bg-slate-950/30 border border-slate-800 p-4 rounded-xl mb-4 text-center outline-none focus:border-blue-900 text-xs">
+        <button onclick="runBoost()" id="boost_btn" class="w-full bg-blue-900/20 border border-blue-800 hover:bg-blue-900/40 py-3 rounded-xl font-bold text-[10px] transition-all">ACTIVATE BOOSTING</button>
     </div>
-
-    <p class="text-[8px] text-center mt-10 text-gray-600 tracking-[0.4em] font-bold uppercase italic">Hamza Baba Global Tech</p>
 
     <script>
         const API = "https://usmansp-hamzababa-engine.hf.space";
         let dl_hd = ""; let dl_sd = "";
 
+        // آٹو میٹک چیک کرنے والا فنکشن
+        function autoFetch() {
+            const val = document.getElementById('v_url').value;
+            if(val.includes("tiktok.com")) {
+                document.getElementById('loading_spinner').classList.remove('hidden');
+                // جیسے ہی لنک مکمل ہوگا، خود ہی سرچ شروع کر دے گا
+                if(val.length > 25) getTiktok();
+            }
+        }
+
         async function getTiktok() {
             const val = document.getElementById('v_url').value;
             const btn = document.getElementById('main_btn');
-            if(!val) return alert("لنک ڈالیں!");
-            btn.innerText = "CONNECTING..."; btn.disabled = true;
+            if(!val) return;
+            
+            btn.innerText = "PROCESSING..."; 
+            document.getElementById('loading_spinner').classList.remove('hidden');
+
             try {
                 const r = await fetch(`${API}/download?url=${encodeURIComponent(val)}`);
                 const data = await r.json();
@@ -59,42 +98,40 @@
                     document.getElementById('v_title').innerText = data.title;
                     dl_hd = data.hd_link; dl_sd = data.link;
                     document.getElementById('res_card').classList.remove('hidden');
-                    btn.innerText = "VIDEO READY!";
-                    btn.disabled = false;
+                    btn.innerText = "SUCCESSFULLY READY";
+                    document.getElementById('loading_spinner').classList.add('hidden');
                 }
-            } catch(e) { alert("Engine Error!"); btn.disabled = false; btn.innerText = "GET VIDEO DETAILS"; }
+            } catch(e) { 
+                btn.innerText = "ERROR - TRY AGAIN"; 
+                document.getElementById('loading_spinner').classList.add('hidden');
+            }
         }
 
         async function save(type) {
             const link = type === 'hd' ? dl_hd : dl_sd;
-            const b = event.target; const old = b.innerText; b.innerText = "SAVING...";
+            const b = event.target; b.innerText = "DOWNLOADING...";
             try {
                 const resp = await fetch(link);
                 const blob = await resp.blob();
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = `HamzaBaba_${Date.now()}.mp4`;
+                a.download = `HamzaBaba_TK1_${Date.now()}.mp4`;
                 document.body.appendChild(a); a.click();
-                b.innerText = "SUCCESS!";
-                setTimeout(() => b.innerText = old, 2000);
-            } catch(e) { alert("Download Failed!"); b.innerText = old; }
+                b.innerText = "FILE SAVED!";
+                setTimeout(() => b.innerText = (type === 'hd' ? "🚀 WITHOUT WATERMARK (HD)" : "🎞️ NORMAL VIDEO"), 2000);
+            } catch(e) { b.innerText = "ERROR!"; }
         }
 
         async function runBoost() {
             const val = document.getElementById('b_url').value;
             const btn = document.getElementById('boost_btn');
-            const status = document.getElementById('boost_status');
-            if(!val) return alert("بوسٹنگ لنک ڈالیں!");
-            btn.innerText = "INJECTING POWER...";
-            status.innerText = ">>> MISSION STARTED <<<";
+            if(!val) return alert("لنک غائب ہے!");
+            btn.innerText = "SYSTEM INJECTING...";
             try {
                 await fetch(`${API}/start?url=${encodeURIComponent(val)}`);
-                setTimeout(() => {
-                    btn.innerText = "BOOSTING ACTIVE";
-                    status.innerText = "بوسٹنگ کامیابی سے شروع ہو گئی ہے!";
-                }, 2000);
-            } catch(e) { btn.innerText = "START BOOSTING"; status.innerText = "Error!"; }
+                setTimeout(() => { btn.innerText = "BOOSTING ACTIVE"; }, 2000);
+            } catch(e) { btn.innerText = "ERROR!"; }
         }
     </script>
 </body>
