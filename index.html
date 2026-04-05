@@ -1,97 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hamza Baba Media | Pro Tool</title>
+    <title>Hamza Baba Media</title>
     <style>
-        body { background: #0b0f1a; color: #e2e8f0; font-family: 'Segoe UI', sans-serif; text-align: center; padding: 20px; }
-        .container { max-width: 500px; margin: auto; }
-        h1 { color: #6366f1; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 30px; }
-        .card { background: #161e2d; padding: 25px; border-radius: 16px; margin-top: 20px; border: 1px solid #2d3748; box-shadow: 0 10px 15px rgba(0,0,0,0.3); }
-        h2 { font-size: 1.2rem; color: #94a3b8; margin-bottom: 15px; }
-        input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #1e293b; color: white; margin-bottom: 15px; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; border-radius: 8px; border: none; background: #4f46e5; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        button:hover { background: #4338ca; transform: translateY(-2px); }
-        #downloadResult, #testResult { margin-top: 15px; font-weight: bold; color: #10b981; }
-        .dl-btn { background: #10b981; text-decoration: none; color: white; padding: 10px 20px; border-radius: 6px; display: inline-block; margin-top: 10px; }
+        body { background: #0f172a; color: white; font-family: sans-serif; text-align: center; padding: 20px; }
+        .card { background: #1e293b; padding: 20px; border-radius: 12px; margin: 20px auto; max-width: 400px; border: 1px solid #334155; }
+        input { width: 90%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: none; }
+        button { width: 95%; padding: 10px; background: #4f46e5; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .dl-btn { display: inline-block; background: #22c55e; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; margin-top: 15px; }
     </style>
 </head>
 <body>
-
-<div class="container">
-    <h1>Hamza Baba Media</h1>
-
+    <h1>HAMZA BABA MEDIA</h1>
+    
     <div class="card">
-        <h2>Video Downloader v3.0</h2>
-        <input type="text" id="videoUrl" placeholder="Paste Link (FB / TikTok / YT)">
-        <button id="dlBtn" onclick="downloadVideo()">CHECK LINK</button>
-        <div id="downloadResult"></div>
+        <h3>Video Downloader</h3>
+        <input type="text" id="vUrl" placeholder="Paste Link Here">
+        <button onclick="process('download')">CHECK LINK</button>
+        <div id="dlRes"></div>
     </div>
 
     <div class="card">
-        <h2>Traffic Tester (Safe Boost)</h2>
-        <input type="text" id="testUrl" placeholder="Paste Video Link for Boost">
-        <button id="boostBtn" onclick="testLoad()">START SYSTEM BOOST</button>
-        <div id="testResult"></div>
+        <h3>Traffic Booster</h3>
+        <input type="text" id="tUrl" placeholder="Paste Link for Boost">
+        <button onclick="process('boost')">START BOOST</button>
+        <div id="tRes"></div>
     </div>
-</div>
 
-<script>
-const API_BASE = "https://usmansp-hanzababa-engine.hf.space";
+    <script>
+        const API = "https://usmansp-hanzababa-engine.hf.space";
 
-async function downloadVideo() {
-    const url = document.getElementById("videoUrl").value;
-    const result = document.getElementById("downloadResult");
-    const btn = document.getElementById("dlBtn");
+        async function process(type) {
+            const isDl = type === 'download';
+            const url = document.getElementById(isDl ? "vUrl" : "tUrl").value;
+            const resDiv = document.getElementById(isDl ? "dlRes" : "tRes");
+            
+            if(!url) return alert("Paste link first!");
+            resDiv.innerText = "Processing...";
 
-    if(!url) return alert("Please paste a link!");
-    result.innerText = "Searching on Servers...";
-    btn.disabled = true;
+            try {
+                const response = await fetch(`${API}/api/${isDl ? 'download' : 'test-load'}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ url: url })
+                });
+                const data = await response.json();
 
-    try {
-        const res = await fetch(`${API_BASE}/api/download`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ url: url })
-        });
-        const data = await res.json();
-        if (data.success) {
-            result.innerHTML = `<p>Video Found!</p><a href="${data.download_url}" target="_blank" class="dl-btn">DOWNLOAD NOW</a>`;
-        } else {
-            result.innerText = "Error: " + data.error;
+                if(isDl && data.success) {
+                    resDiv.innerHTML = `<a href="${data.download_url}" target="_blank" class="dl-btn">DOWNLOAD VIDEO NOW</a>`;
+                } else {
+                    resDiv.innerText = data.message || data.error || "Done!";
+                }
+            } catch (e) {
+                resDiv.innerText = "Server Error. Try again.";
+            }
         }
-    } catch (err) {
-        result.innerText = "Server not responding. Please try again.";
-    } finally {
-        btn.disabled = false;
-    }
-}
-
-async function testLoad() {
-    const url = document.getElementById("testUrl").value;
-    const result = document.getElementById("testResult");
-    const btn = document.getElementById("boostBtn");
-
-    if(!url) return alert("Please paste a link!");
-    result.innerText = "Injecting Traffic Signals...";
-    btn.disabled = true;
-
-    try {
-        const res = await fetch(`${API_BASE}/api/test-load`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ url: url })
-        });
-        const data = await res.json();
-        result.innerText = data.message || "Boost Completed!";
-    } catch (err) {
-        result.innerText = "Error running boost system.";
-    } finally {
-        btn.disabled = false;
-    }
-}
-</script>
-
+    </script>
 </body>
 </html>
