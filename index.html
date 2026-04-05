@@ -2,38 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Hamza Baba Media</title>
+  <title>Hamza Baba Media | Pro Downloader</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body {
-      background: #0f172a;
-      color: white;
-      font-family: Arial;
-      text-align: center;
-    }
-    .container {
-      max-width: 600px;
-      margin: auto;
-      padding: 20px;
-    }
-    input, button {
-      padding: 12px;
-      margin: 10px;
-      width: 90%;
-      border-radius: 8px;
-      border: none;
-    }
-    button {
-      background: #6366f1;
-      color: white;
-      cursor: pointer;
-    }
-    .card {
-      background: #1e293b;
-      padding: 20px;
-      border-radius: 12px;
-      margin-top: 20px;
-    }
+    /* حمزہ بابا پریمیم ڈارک تھیم */
+    body { background: #0b0f1a; color: #e2e8f0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; margin: 0; padding: 20px; }
+    .container { max-width: 500px; margin: auto; }
+    h1 { color: #6366f1; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 30px; }
+    .card { background: #161e2d; padding: 25px; border-radius: 16px; margin-top: 20px; border: 1px solid #2d3748; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5); }
+    h2 { font-size: 1.2rem; color: #94a3b8; margin-bottom: 15px; }
+    input { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; }
+    button { width: 100%; padding: 12px; border-radius: 8px; border: none; background: #4f46e5; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; }
+    button:hover { background: #4338ca; transform: translateY(-2px); }
+    #downloadResult, #testResult { margin-top: 15px; font-weight: bold; color: #10b981; }
+    a { color: #818cf8; text-decoration: none; border: 1px solid #818cf8; padding: 8px 15px; border-radius: 5px; display: inline-block; margin-top: 10px; }
   </style>
 </head>
 <body>
@@ -41,68 +23,73 @@
 <div class="container">
   <h1>Hamza Baba Media</h1>
 
-  <!-- Downloader Section -->
   <div class="card">
-    <h2>Video Downloader</h2>
-    <input type="text" id="videoUrl" placeholder="Paste Facebook / TikTok / YouTube URL">
-    <button onclick="downloadVideo()">Download</button>
-    <p id="downloadResult"></p>
+    <h2>Video Downloader v3.0</h2>
+    <input type="text" id="videoUrl" placeholder="Paste Link (FB / TikTok / YT)">
+    <button id="dlBtn" onclick="downloadVideo()">CHECK LINK</button>
+    <div id="downloadResult"></div>
   </div>
 
-  <!-- Safe Load Testing Tool -->
   <div class="card">
-    <h2>Traffic Tester (Safe)</h2>
-    <input type="text" id="testUrl" placeholder="Your own API URL only">
-    <button onclick="testLoad()">Run Test</button>
-    <p id="testResult"></p>
+    <h2>Traffic Tester (Safe Boost)</h2>
+    <input type="text" id="testUrl" placeholder="Paste Video Link for Boost">
+    <button id="boostBtn" onclick="testLoad()">START SYSTEM BOOST</button>
+    <div id="testResult"></div>
   </div>
 </div>
 
 <script>
-const API_BASE = "https://your-huggingface-space-url";
+// آپ کا ہگنگ فیس انجن لنک
+const API_BASE = "https://usmansp-hanzababa-engine.hf.space";
 
 async function downloadVideo() {
   const url = document.getElementById("videoUrl").value;
   const result = document.getElementById("downloadResult");
+  const btn = document.getElementById("dlBtn");
 
-  result.innerText = "Fetching...";
+  if(!url) return alert("Please paste a link!");
+  
+  result.innerText = "Searching on Servers...";
+  btn.disabled = true;
 
   try {
-    const res = await fetch(`${API_BASE}/api/download`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ url })
-    });
-
+    // یہاں ہم GET ریکویسٹ بھیج رہے ہیں جیسا کہ ہم نے app.py میں سیٹ کیا تھا
+    const res = await fetch(`${API_BASE}/api/download?url=${encodeURIComponent(url)}`);
     const data = await res.json();
 
     if (data.success) {
-      result.innerHTML = `<a href="${data.download_url}" target="_blank">Download Video</a>`;
+      result.innerHTML = `
+        <p style="color:white">Video Found!</p>
+        <a href="${data.download_url}" target="_blank">DOWNLOAD VIDEO NOW</a>
+      `;
     } else {
-      result.innerText = data.error;
+      result.innerText = "Error: " + data.error;
     }
   } catch (err) {
-    result.innerText = "Server error";
+    result.innerText = "Server not responding. Please try again.";
+  } finally {
+    btn.disabled = false;
   }
 }
 
 async function testLoad() {
   const url = document.getElementById("testUrl").value;
   const result = document.getElementById("testResult");
+  const btn = document.getElementById("boostBtn");
 
-  result.innerText = "Running test...";
+  if(!url) return alert("Please paste a link!");
+
+  result.innerText = "Injecting Traffic Signals...";
+  btn.disabled = true;
 
   try {
-    const res = await fetch(`${API_BASE}/api/test-load`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ url })
-    });
-
+    const res = await fetch(`${API_BASE}/api/test-load?url=${encodeURIComponent(url)}`);
     const data = await res.json();
-    result.innerText = data.message;
+    result.innerText = data.message || "Boost Completed Successfully!";
   } catch (err) {
-    result.innerText = "Error running test";
+    result.innerText = "Error running boost system.";
+  } finally {
+    btn.disabled = false;
   }
 }
 </script>
