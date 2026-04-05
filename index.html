@@ -12,53 +12,52 @@
         <h1 class="text-center text-3xl font-black text-blue-500 mb-8">TK1 CORE</h1>
 
         <div class="mb-10">
-            <h2 class="text-green-400 text-sm font-bold mb-2">📥 FAST DOWNLOADER</h2>
-            <input id="v_url" type="text" placeholder="Paste link here..." class="w-full bg-slate-800 p-4 rounded-xl mb-3 outline-none border border-transparent focus:border-green-500 text-white">
-            <button onclick="runDL()" id="btn_dl" class="w-full bg-green-600 py-4 rounded-xl font-bold uppercase hover:bg-green-700 transition">Get Link</button>
+            <h2 class="text-green-400 text-sm font-bold mb-2 text-left">📥 FAST DOWNLOADER</h2>
+            <input id="v_url" type="text" placeholder="Paste link here..." class="w-full bg-slate-800 p-4 rounded-xl mb-3 outline-none border border-transparent focus:border-green-500">
+            <button onclick="runDL()" id="btn_dl" class="w-full bg-green-600 py-4 rounded-xl font-bold uppercase">Get Link</button>
             <div id="res_area" class="mt-4 hidden text-center">
                 <a id="final_link" href="#" target="_blank" class="bg-blue-600 px-8 py-3 rounded-full font-bold inline-block">⚡ CLICK TO SAVE</a>
             </div>
         </div>
 
         <div>
-            <h2 class="text-blue-400 text-sm font-bold mb-2">🚀 STEALTH BOOSTER</h2>
-            <input id="b_url" type="text" placeholder="TikTok Link..." class="w-full bg-slate-800 p-4 rounded-xl mb-3 outline-none text-white">
-            <button onclick="runBoost()" id="btn_boost" class="w-full bg-blue-700 py-4 rounded-xl font-bold uppercase hover:bg-blue-800 transition">Start 50+ Views</button>
+            <h2 class="text-blue-400 text-sm font-bold mb-2 text-left">🚀 STEALTH BOOSTER</h2>
+            <input id="b_url" type="text" placeholder="TikTok Link..." class="w-full bg-slate-800 p-4 rounded-xl mb-3 outline-none">
+            <button onclick="runBoost()" id="btn_boost" class="w-full bg-blue-700 py-4 rounded-xl font-bold uppercase">Start 50+ Views</button>
             <p id="status_msg" class="text-[10px] text-center mt-3 text-gray-500 font-mono"></p>
         </div>
     </div>
 
     <script>
-        // عثمان صاحب، یہاں پراکسی لنک ڈال دیا ہے تاکہ ہگنگ فیس کنیکٹ ہو جائے
-        const API = "https://usmansp-hanzababa-engine.hf.space/proxy/7860";
+        // عثمان صاحب، میں نے اب 'allorigins' کا استعمال کیا ہے جو بلاک نہیں ہوگا
+        const API_TARGET = "https://usmansp-hanzababa-engine.hf.space";
+        const PROXY = "https://api.allorigins.win/get?url=";
 
         async function runDL() {
             const val = document.getElementById('v_url').value;
             const btn = document.getElementById('btn_dl');
-            if(!val) return alert("Please paste a link first!");
+            if(!val) return alert("Link missing!");
             
             btn.innerText = "CONNECTING...";
             btn.disabled = true;
 
             try {
-                const response = await fetch(API + "/download", {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({url: val})
-                });
+                // نیا طریقہ: یہ سرور کو بائی پاس کرے گا
+                const response = await fetch(PROXY + encodeURIComponent(API_TARGET + "/download?url=" + val));
                 const data = await response.json();
+                const result = JSON.parse(data.contents);
 
-                if(data.status === 'success') {
-                    document.getElementById('final_link').href = data.link;
+                if(result.status === 'success') {
+                    document.getElementById('final_link').href = result.link;
                     document.getElementById('res_area').classList.remove('hidden');
                     btn.innerText = "SUCCESS!";
                 } else {
-                    alert("Engine Error: " + data.message);
-                    btn.innerText = "TRY AGAIN";
+                    alert("Engine Busy - Try Again");
+                    btn.innerText = "RETRY";
                     btn.disabled = false;
                 }
             } catch(error) { 
-                alert("SERVER OFFLINE! Please check if Hugging Face is Running.");
+                alert("Please check if Hugging Face is 'Running' and Refresh Page.");
                 btn.innerText = "ERROR";
                 btn.disabled = false;
             }
@@ -66,20 +65,12 @@
 
         async function runBoost() {
             const val = document.getElementById('b_url').value;
-            const msg = document.getElementById('status_msg');
-            if(!val) return alert("Paste TikTok Link!");
-
-            msg.innerText = ">>> INITIATING PROTOCOL <<<";
+            if(!val) return alert("Link missing!");
+            document.getElementById('status_msg').innerText = ">>> INITIATING... <<<";
             try {
-                await fetch(API + "/start", {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({url: val})
-                });
-                msg.innerText = ">>> MISSION STARTED SUCCESSFULLY <<<";
-            } catch(e) { 
-                msg.innerText = ">>> CONNECTION FAILED <<<"; 
-            }
+                await fetch(PROXY + encodeURIComponent(API_TARGET + "/start?url=" + val));
+                document.getElementById('status_msg').innerText = ">>> STARTED <<<";
+            } catch(e) { document.getElementById('status_msg').innerText = ">>> FAILED <<<"; }
         }
     </script>
 </body>
